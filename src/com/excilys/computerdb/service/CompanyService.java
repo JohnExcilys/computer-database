@@ -1,6 +1,5 @@
 package com.excilys.computerdb.service;
 
-
 import com.excilys.computerdb.dao.CompanyDao;
 
 public class CompanyService {

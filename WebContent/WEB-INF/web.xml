@@ -13,7 +13,7 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 	<resource-ref>
-		<description>DB Connection</description>
+		<description>Connection Pool</description>
 		<res-ref-name>computerDb</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>Container</res-auth>

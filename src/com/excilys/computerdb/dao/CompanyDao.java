@@ -29,7 +29,8 @@ public class CompanyDao {
 		return _instance;
 	}
 
-	public ArrayList<Company> getCompanies() throws NamingException, SQLException {
+	public ArrayList<Company> getCompanies() throws NamingException,
+			SQLException {
 		Context ctx = new InitialContext();
 		Context initContext = (Context) ctx.lookup("java:/comp/env");
 		DataSource ds = (DataSource) initContext.lookup("computerDb");
@@ -37,17 +38,17 @@ public class CompanyDao {
 
 		Statement st = cn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT id, name FROM company");
-		
+
 		ArrayList<Company> companyList = new ArrayList<Company>();
-		
+
 		while (rs.next()) {
 			companyList.add(new Company(rs.getInt("id"), rs.getString("name")));
 		}
-		
+
 		rs.close();
 		st.close();
 		cn.close();
-		
+
 		return companyList;
 	}
 }

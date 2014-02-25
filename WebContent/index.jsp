@@ -1,3 +1,4 @@
+
 <%
-response.sendRedirect("dashboard.jsp");
+	response.sendRedirect("dashboard.jsp");
 %>
