@@ -3,69 +3,97 @@ package com.excilys.computerdb.model;
 import java.util.Date;
 
 public class Computer {
-	private int _id;
-	private String _name;
-	private Date _introduced;
-	private Date _discontinued;
-	private int _companyId;
+	private int id;
+	private String name;
+	private Date introduced;
+	private Date discontinued;
+	private int companyId;
+	private String companyName;
 
 	// Getter et Setter
-	public int get_id() {
-		return _id;
+	public int getid() {
+		return id;
 	}
 
-	public void set_id(int _id) {
-		this._id = _id;
+	public void setid(int id) {
+		this.id = id;
 	}
 
-	public String get_name() {
-		return _name;
+	public String getname() {
+		return name;
 	}
 
-	public void set_name(String _name) {
-		this._name = _name;
+	public void setname(String name) {
+		this.name = name;
 	}
 
-	public Date get_introduced() {
-		return _introduced;
+	public Date getintroduced() {
+		return introduced;
 	}
 
-	public void set_introduced(Date _introduced) {
-		this._introduced = _introduced;
+	public void setintroduced(Date introduced) {
+		this.introduced = introduced;
 	}
 
-	public Date get_discontinued() {
-		return _discontinued;
+	public Date getdiscontinued() {
+		return discontinued;
 	}
 
-	public void set_discontinued(Date _discontinued) {
-		this._discontinued = _discontinued;
+	public void setdiscontinued(Date discontinued) {
+		this.discontinued = discontinued;
 	}
 
-	public int get_companyId() {
-		return _companyId;
+	public int getcompanyId() {
+		return companyId;
 	}
 
-	public void set_companyId(int _companyId) {
-		this._companyId = _companyId;
+	public void setcompanyId(int companyId) {
+		this.companyId = companyId;
+	}
+	
+	public String getcompanyName() {
+		return companyName;
+	}
+
+	public void setcompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	// Methodes
 	public Computer() {
-		this._id = 0;
-		this._name = "";
-		this._introduced = new Date();
-		this._discontinued = new Date();
-		this._companyId = 0;
+		this.id = 0;
+		this.name = "";
+		this.introduced = new Date();
+		this.discontinued = new Date();
+		this.companyId = 0;
+	}
+	
+	public Computer(String name, Date introduced, Date discontinued,
+			int companyId) {
+		this.id = 0;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.companyId = companyId;
 	}
 
 	public Computer(int id, String name, Date introduced, Date discontinued,
 			int companyId) {
-		this._id = id;
-		this._name = name;
-		this._introduced = introduced;
-		this._discontinued = discontinued;
-		this._companyId = companyId;
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.companyId = companyId;
+	}
+	
+	public Computer(int id, String name, Date introduced, Date discontinued,
+			int companyId, String companyName) {
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.companyId = companyId;
+		this.companyName = companyName;
 	}
 
 }

@@ -1,35 +1,35 @@
 package com.excilys.computerdb.model;
 
 public class Company {
-	private int _id;
-	private String _name;
+	private int id;
+	private String name;
 
 	// Getter et Setter
-	public int get_id() {
-		return _id;
+	public int getid() {
+		return id;
 	}
 
-	public void set_id(int _id) {
-		this._id = _id;
+	public void setid(int id) {
+		this.id = id;
 	}
 
-	public String get_name() {
-		return _name;
+	public String getname() {
+		return name;
 	}
 
-	public void set_name(String _name) {
-		this._name = _name;
+	public void setname(String name) {
+		this.name = name;
 	}
 
 	// Methodes
 	public Company() {
-		this._id = 0;
-		this._name = "";
+		this.id = 0;
+		this.name = "";
 	}
 
 	public Company(int id, String name) {
-		this._id = id;
-		this._name = name;
+		this.id = id;
+		this.name = name;
 	}
 
 }

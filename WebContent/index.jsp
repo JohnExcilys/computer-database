@@ -1,4 +1,4 @@
 
 <%
-	response.sendRedirect("dashboard.jsp");
+	response.sendRedirect("DashboardServlet");
 %>
