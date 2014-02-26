@@ -97,6 +97,31 @@ public class AddComputerServlet extends HttpServlet {
 			}
 		}
 		
+		if(request.getParameter("field") != null){
+			
+			ComputerDao cdao = ComputerDao.getInstance();
+			rd = getServletContext().getRequestDispatcher("/dashboard.jsp");
+			String sens = "DESC";
+			
+			if(request.getParameter("sens") != null){
+				sens = request.getParameter("sens");
+			}
+			
+			if (sens.equals("ASC")){
+				sens = "DESC";
+			}else if (sens.equals("DESC")){
+				sens = "ASC";
+			}
+			
+			request.setAttribute("sens", sens);
+			try {
+				request.setAttribute("computers", cdao.getComputersByTag(request.getParameter("field"), sens));
+			} catch (NumberFormatException | NamingException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		rd.forward(request, response);
 	}
 

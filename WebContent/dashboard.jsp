@@ -18,12 +18,12 @@
 			<tr>
 				<!-- Variable declarations for passing labels as parameters -->
 				<!-- Table header for Computer Name -->
-				<th>Computer Name</th>
-				<th>Introduced Date</th>
+				<th><a href="AddComputerServlet?field=name&sens=<c:out value="${requestScope['sens']}" default=""/>">Computer Name</a></th>
+				<th><a href="AddComputerServlet?field=introduced&sens=<c:out value="${requestScope['sens']}" default=""/>">Introduced Date</a></th>
 				<!-- Table header for Discontinued Date -->
-				<th>Discontinued Date</th>
+				<th><a href="AddComputerServlet?field=discontinued&sens=<c:out value="${requestScope['sens']}" default=""/>">Discontinued Date</a></th>
 				<!-- Table header for Company -->
-				<th>Company</th>
+				<th><a href="AddComputerServlet?field=cname&sens=<c:out value="${requestScope['sens']}" default=""/>">Company</a></th>
 				<!--  Header pour suppression -->
 				<th>Delete</th>
 			</tr>

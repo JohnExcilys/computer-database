@@ -36,6 +36,7 @@ public class DashboardServlet extends HttpServlet {
 		ComputerDao cs = ComputerDao.getInstance();
 		try {
 			request.setAttribute("computers", cs.getComputers());
+			request.setAttribute("sens", "ASC");
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

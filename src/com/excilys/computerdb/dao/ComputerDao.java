@@ -53,6 +53,40 @@ public class ComputerDao {
 		return computerList;
 	}
 	
+	public ArrayList<Computer> getComputersByTag(String field, String sens) throws NamingException,
+	SQLException {
+		Context ctx = new InitialContext();
+		Context initContext = (Context) ctx.lookup("java:/comp/env");
+		DataSource ds = (DataSource) initContext.lookup("computerDb");
+		Connection cn = ds.getConnection();
+		
+		PreparedStatement st;
+		if(!field.equals("name") && !field.equals("introduced") && !field.equals("discontinued") && !field.equals("cname")){
+			// Si l'utilisateur change les champs à la main
+			st = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, cp.name AS cname FROM computer AS c LEFT JOIN company AS cp ON c.company_id = cp.id ORDER BY ? ASC");
+			st.setString(1, "name");
+		}else{
+			// Si l'utilisateur est calme ...
+			if(sens.equals("ASC")){
+				st = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, cp.name AS cname FROM computer AS c LEFT JOIN company AS cp ON c.company_id = cp.id ORDER BY "+field+" ASC");
+			}else{
+				st = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, cp.name AS cname FROM computer AS c LEFT JOIN company AS cp ON c.company_id = cp.id ORDER BY "+field+" DESC");
+			}
+		}
+		ResultSet rs = st.executeQuery();
+		
+		ArrayList<Computer> computerList = new ArrayList<Computer>();
+		while (rs.next()) {
+			computerList.add(new Computer(rs.getInt("id"),rs.getString("name"), rs.getDate("introduced"), rs.getDate("discontinued"), rs.getInt("company_id"), rs.getString("cname")));
+		}
+
+		rs.close();
+		st.close();
+		cn.close();
+		
+		return computerList;
+	}
+	
 	public ArrayList<Computer> getComputersByNameOrCompany(String seed) throws SQLException, NamingException{
 		Context ctx = new InitialContext();
 		Context initContext = (Context) ctx.lookup("java:/comp/env");
