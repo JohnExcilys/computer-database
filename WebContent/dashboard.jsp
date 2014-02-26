@@ -24,15 +24,18 @@
 				<th>Discontinued Date</th>
 				<!-- Table header for Company -->
 				<th>Company</th>
+				<!--  Header pour suppression -->
+				<th>Delete</th>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach var="computer" items="${requestScope['computers']}" >
 		<tr>
-		<td>${computer.name}</td>
+		<td><a href="AddComputerServlet?update=${computer.id}">${computer.name}</a></td>
 		<td>${computer.introduced}</td>
 		<td>${computer.discontinued}</td>
 		<td>${computer.companyName}</td>
+		<td><a class="btn danger" href="AddComputerServlet?delete=${computer.id}">Delete</a></td>
 		</tr>
 		</c:forEach>
 		</tbody>

@@ -10,7 +10,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
 import com.excilys.computerdb.model.Company;
 
 public class CompanyDao {
@@ -51,4 +50,5 @@ public class CompanyDao {
 
 		return companyList;
 	}
+	
 }

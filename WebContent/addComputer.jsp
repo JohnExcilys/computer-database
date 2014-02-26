@@ -2,28 +2,28 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <section id="main">
 	<c:out value="${requestScope['ajout']}" default=""/>
-	<h1>Add Computer</h1>
+	<h1><c:out value="${requestScope['formState']}" default=""/> Computer</h1>
 
-	<form action="AddComputerServlet" method="POST">
+	<form action="<c:out value="${requestScope['action']}" default=""/>" method="POST">
 		<fieldset>
 			<div class="clearfix">
 				<label for="name">Computer name:</label>
 				<div class="input">
-					<input type="text" name="name" /> <span class="help-inline">Required</span>
+					<input type="text" name="name" value="${requestScope['computer'].name}"/> <span class="help-inline">Required</span>
 				</div>
 			</div>
 
 			<div class="clearfix">
 				<label for="introduced">Introduced date:</label>
 				<div class="input">
-					<input type="date" name="introducedDate" pattern="YY-MM-dd" /> <span
+					<input type="date" name="introducedDate" pattern="YY-MM-dd" value="${requestScope['computer'].introduced}"/> <span
 						class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
 			<div class="clearfix">
 				<label for="discontinued">Discontinued date:</label>
 				<div class="input">
-					<input type="date" name="discontinuedDate" pattern="YY-MM-dd" /> <span
+					<input type="date" name="discontinuedDate" pattern="YY-MM-dd" value="${requestScope['computer'].discontinued}"/> <span
 						class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
@@ -40,7 +40,7 @@
 			</div>
 		</fieldset>
 		<div class="actions">
-			<input type="submit" value="Add" class="btn primary"> or <a
+			<input type="submit" value="<c:out value="${requestScope['formState']}" default=""/>" class="btn primary"> or <a
 				href="DashboardServlet" class="btn">Cancel</a>
 		</div>
 	</form>

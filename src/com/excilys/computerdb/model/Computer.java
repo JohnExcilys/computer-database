@@ -68,8 +68,7 @@ public class Computer {
 		this.companyId = 0;
 	}
 	
-	public Computer(String name, Date introduced, Date discontinued,
-			int companyId) {
+	public Computer(String name, Date introduced, Date discontinued,int companyId) {
 		this.id = 0;
 		this.name = name;
 		this.introduced = introduced;
@@ -77,8 +76,7 @@ public class Computer {
 		this.companyId = companyId;
 	}
 
-	public Computer(int id, String name, Date introduced, Date discontinued,
-			int companyId) {
+	public Computer(int id, String name, Date introduced, Date discontinued, int companyId) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
@@ -86,14 +84,21 @@ public class Computer {
 		this.companyId = companyId;
 	}
 	
-	public Computer(int id, String name, Date introduced, Date discontinued,
-			int companyId, String companyName) {
+	public Computer(int id, String name, Date introduced, Date discontinued, int companyId, String companyName) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
 		this.companyId = companyId;
 		this.companyName = companyName;
+	}
+
+	@Override
+	public String toString() {
+		return "Computer [id=" + id + ", name=" + name + ", introduced="
+				+ introduced + ", discontinued=" + discontinued
+				+ ", companyId=" + companyId + ", companyName=" + companyName
+				+ "]";
 	}
 
 }
