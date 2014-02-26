@@ -4,7 +4,7 @@
 <section id="main">
 	<h1 id="homeTitle">${fn:length(requestScope['computers'])} Computers found</h1>
 	<div id="actions">
-		<form action="" method="GET">
+		<form action="./AddComputerServlet" method="GET">
 			<input type="search" id="searchbox" name="search" value=""
 				placeholder="Search name"> <input type="submit"
 				id="searchsubmit" value="Filter by name" class="btn primary">

@@ -86,6 +86,17 @@ public class AddComputerServlet extends HttpServlet {
 			}
 		}
 		
+		if(request.getParameter("search") != null){
+			ComputerDao cdao = ComputerDao.getInstance();
+			rd = getServletContext().getRequestDispatcher("/dashboard.jsp");
+			try {
+				request.setAttribute("computers", cdao.getComputersByNameOrCompany(request.getParameter("search")));
+			} catch (NumberFormatException | NamingException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		rd.forward(request, response);
 	}
 
@@ -95,26 +106,33 @@ public class AddComputerServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date introducedDate = new Date();
-		Date discontinuedDate = new Date();
+		Date introducedDate = null;
+		Date discontinuedDate = null;
 		try {
+			if(isDateValid(request.getParameter("introducedDate")) && isDateValid(request.getParameter("discontinuedDate"))){
 			introducedDate = df.parse(request.getParameter("introducedDate"));
 			discontinuedDate = df.parse(request.getParameter("discontinuedDate"));
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int companyId = Integer.parseInt(request.getParameter("company"));
 		
-		// Ajout d'un ordinateur
 		ComputerDao cDao = ComputerDao.getInstance();
-		
+		// Ajout d'un ordinateur
 		if (request.getParameter("update") == null){
 			//Ajout d'un ordinateur
 			try {
-				cDao.insertComputer(new Computer(name, introducedDate, discontinuedDate, companyId));
-				request.setAttribute("formState", "Add");
-				request.setAttribute("ajout", "L'ordinateur a été ajouté avec succés.");
+				if(name != "" && isDateValid(request.getParameter("introducedDate")) && isDateValid(request.getParameter("discontinuedDate")) && companyId != 0){
+					cDao.insertComputer(new Computer(name, introducedDate, discontinuedDate, companyId));
+					request.setAttribute("formState", "Add");
+					request.setAttribute("ajout", "L'ordinateur a été ajouté avec succés.");
+				}
+				else{
+					request.setAttribute("formState", "Add");
+					request.setAttribute("ajout", "L'ordinateur n'a pas été ajouté. Certains champs doivent être incorrects.");
+				}
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -152,5 +170,19 @@ public class AddComputerServlet extends HttpServlet {
 		}
 		rd.forward(request, response);
 	}
+
+		public static boolean isDateValid(String date){
+	        try {
+	        	if(date != ""){
+	            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	            df.setLenient(false);
+	            df.parse(date);
+	            return true;
+	        	}
+	        } catch (ParseException e) {
+	            return false;
+	        }
+			return false;
+		}
 
 }

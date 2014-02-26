@@ -53,6 +53,30 @@ public class ComputerDao {
 		return computerList;
 	}
 	
+	public ArrayList<Computer> getComputersByNameOrCompany(String seed) throws SQLException, NamingException{
+		Context ctx = new InitialContext();
+		Context initContext = (Context) ctx.lookup("java:/comp/env");
+		DataSource ds = (DataSource) initContext.lookup("computerDb");
+		Connection cn = ds.getConnection();
+
+		PreparedStatement st = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, co.name FROM computer AS c JOIN company AS co on c.company_id = co.id where c.name LIKE ? OR co.name LIKE ?");
+		st.setString(1, "%"+seed+"%");
+		st.setString(2, "%"+seed+"%");
+		ResultSet rs = st.executeQuery();
+				
+		ArrayList<Computer> computerList = new ArrayList<Computer>();
+		while (rs.next()) {
+			computerList.add(new Computer(rs.getInt("id"),rs.getString("name"), rs.getDate("introduced"), rs.getDate("discontinued"), rs.getInt("company_id"), rs.getString("co.name")));
+		}
+
+		rs.close();
+		st.close();
+		cn.close();
+		
+		return computerList;
+		
+	}
+	
 	public void insertComputer(Computer computer) throws NamingException, SQLException{
 		Context ctx = new InitialContext();
 		Context initContext = (Context) ctx.lookup("java:/comp/env");

@@ -63,8 +63,8 @@ public class Computer {
 	public Computer() {
 		this.id = 0;
 		this.name = "";
-		this.introduced = new Date();
-		this.discontinued = new Date();
+		this.introduced = null;
+		this.discontinued = null;
 		this.companyId = 0;
 	}
 	
