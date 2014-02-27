@@ -1,6 +1,8 @@
 <jsp:include page="include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="/WEB-INF/pagination.tld" prefix="pagination" %>
+
 <section id="main">
 	<h1 id="homeTitle">${fn:length(requestScope['computers'])} Computers found</h1>
 	<div id="actions">
@@ -18,12 +20,12 @@
 			<tr>
 				<!-- Variable declarations for passing labels as parameters -->
 				<!-- Table header for Computer Name -->
-				<th><a href="AddComputerServlet?field=name&sens=<c:out value="${requestScope['sens']}" default=""/>">Computer Name</a></th>
-				<th><a href="AddComputerServlet?field=introduced&sens=<c:out value="${requestScope['sens']}" default=""/>">Introduced Date</a></th>
+				<th><a href="AddComputerServlet?field=name&sens=<c:out value="${requestScope['sens']}" default=""/>&page=1">Computer Name</a></th>
+				<th><a href="AddComputerServlet?field=introduced&sens=<c:out value="${requestScope['sens']}" default=""/>&page=1">Introduced Date</a></th>
 				<!-- Table header for Discontinued Date -->
-				<th><a href="AddComputerServlet?field=discontinued&sens=<c:out value="${requestScope['sens']}" default=""/>">Discontinued Date</a></th>
+				<th><a href="AddComputerServlet?field=discontinued&sens=<c:out value="${requestScope['sens']}" default=""/>&page=1">Discontinued Date</a></th>
 				<!-- Table header for Company -->
-				<th><a href="AddComputerServlet?field=cname&sens=<c:out value="${requestScope['sens']}" default=""/>">Company</a></th>
+				<th><a href="AddComputerServlet?field=cname&sens=<c:out value="${requestScope['sens']}" default=""/>&page=1">Company</a></th>
 				<!--  Header pour suppression -->
 				<th>Delete</th>
 			</tr>
@@ -40,7 +42,7 @@
 		</c:forEach>
 		</tbody>
 	</table>
-	
+	<pagination:pagination/>
 </section>
 
 <jsp:include page="include/footer.jsp" />

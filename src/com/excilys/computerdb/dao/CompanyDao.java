@@ -6,15 +6,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.DataSource;
+
+import org.apache.log4j.Logger;
+
 import com.excilys.computerdb.model.Company;
 
 public class CompanyDao {
 	private static CompanyDao _instance = null;
-
+	static Logger log = Logger.getLogger(CompanyDao.class.getName());
+	
 	// Initialisation du Singleton
 	private CompanyDao() {
 
@@ -30,11 +31,15 @@ public class CompanyDao {
 
 	public ArrayList<Company> getCompanies() throws NamingException,
 			SQLException {
+		/*
 		Context ctx = new InitialContext();
 		Context initContext = (Context) ctx.lookup("java:/comp/env");
 		DataSource ds = (DataSource) initContext.lookup("computerDb");
 		Connection cn = ds.getConnection();
-
+		*/
+		
+		Connection cn = DBConnection.getConnection();
+		
 		Statement st = cn.createStatement();
 		ResultSet rs = st.executeQuery("SELECT id, name FROM company");
 

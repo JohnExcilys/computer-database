@@ -41,7 +41,7 @@
 		</fieldset>
 		<div class="actions">
 			<input type="submit" value="<c:out value="${requestScope['formState']}" default=""/>" class="btn primary"> or <a
-				href="DashboardServlet" class="btn">Cancel</a>
+				href="DashboardServlet?page=1" class="btn">Cancel</a>
 		</div>
 	</form>
 </section>

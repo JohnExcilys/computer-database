@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+            PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" 
+            "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<taglib>
+    <!-- The version number of this tag library -->
+    <tlibversion>1.0</tlibversion>
+
+    <!-- The JSP specification version required to function -->
+    <jspversion>1.1</jspversion>
+
+    <!-- The short name of this tag library -->
+    <shortname>utility</shortname>
+
+    <!-- Public URI that uniquely identifies this version of the tag library -->
+    <uri>...</uri>
+
+    <!-- General information about this tag library -->
+    <info>...</info>
+    
+    <!-- Pagination tag -->
+    <tag>
+      <name>pagination</name>
+      <tagclass>com.excilys.computerdb.taglib.Pagination</tagclass>
+      <bodycontent>empty</bodycontent>
+      <info>Sert à la pagination</info>
+    </tag>
+</taglib>

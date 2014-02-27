@@ -77,7 +77,7 @@ public class AddComputerServlet extends HttpServlet {
 		
 		if(request.getParameter("delete") != null){
 			ComputerDao cdao = ComputerDao.getInstance();
-			rd = getServletContext().getRequestDispatcher("/DashboardServlet");
+			rd = getServletContext().getRequestDispatcher("/DashboardServlet?page=1");
 			try {
 				cdao.deleteComputer(Integer.parseInt(request.getParameter("delete")));
 			} catch (NumberFormatException | NamingException | SQLException e) {
@@ -161,10 +161,8 @@ public class AddComputerServlet extends HttpServlet {
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+			
 		}else if (request.getParameter("update") != null){
 			//Modification d'un ordinateur
 			try {

@@ -1,4 +1,4 @@
 
 <%
-	response.sendRedirect("DashboardServlet");
+	response.sendRedirect("DashboardServlet?page=1");
 %>

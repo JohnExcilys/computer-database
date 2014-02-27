@@ -2,6 +2,7 @@ package com.excilys.computerdb.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.computerdb.dao.ComputerDao;
+import com.excilys.computerdb.model.Computer;
 
 /**
  * Servlet implementation class DashboardServlet
@@ -44,6 +46,48 @@ public class DashboardServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		if(request.getParameter("page") == null){
+			rd = getServletContext().getRequestDispatcher("/DashboardServlet?page=1");
+		}
+		
+		if(request.getParameter("page") != null){
+			ComputerDao cdao = ComputerDao.getInstance();
+			int count = 0;
+			try {
+				count = cdao.countComputers();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(Integer.parseInt(request.getParameter("page")) <= 0){
+				request.setAttribute("page", 1);
+			}else if (Integer.parseInt(request.getParameter("page")) > (count/10)){
+				request.setAttribute("page", (count / 10));
+			}
+			
+			ArrayList<Computer> computerList = new ArrayList<Computer>();
+			try {
+				 computerList = cdao.getComputersPaginated(10 , Integer.parseInt(request.getParameter("page")));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			request.setAttribute("computers", computerList);
+		}
+		
+				
 		rd.forward(request, response);
 	}
 
