@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.excilys.computerdb.dao.CompanyDao;
 import com.excilys.computerdb.dao.ComputerDao;
 import com.excilys.computerdb.model.Computer;
@@ -25,7 +27,8 @@ import com.excilys.computerdb.model.Computer;
 @WebServlet("/AddComputerServlet")
 public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static Logger log = Logger.getLogger(AddComputerServlet.class.getName());
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -133,6 +136,7 @@ public class AddComputerServlet extends HttpServlet {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date introducedDate = null;
 		Date discontinuedDate = null;
+
 		try {
 			if(isDateValid(request.getParameter("introducedDate")) && isDateValid(request.getParameter("discontinuedDate"))){
 			introducedDate = df.parse(request.getParameter("introducedDate"));
@@ -157,6 +161,7 @@ public class AddComputerServlet extends HttpServlet {
 				else{
 					request.setAttribute("formState", "Add");
 					request.setAttribute("ajout", "L'ordinateur n'a pas été ajouté. Certains champs doivent être incorrects.");
+					log.info("Ordinateur non ajouté - Certains champs doivent être incorrects.");
 				}
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block
@@ -165,17 +170,23 @@ public class AddComputerServlet extends HttpServlet {
 			
 		}else if (request.getParameter("update") != null){
 			//Modification d'un ordinateur
-			try {
-				cDao.updateComputer(new Computer(Integer.parseInt(request.getParameter("update")), name, introducedDate, discontinuedDate, companyId));
-				request.setAttribute("computer", new Computer(name, introducedDate, discontinuedDate, companyId));
+			if(name != "" && isDateValid(request.getParameter("introducedDate")) && isDateValid(request.getParameter("discontinuedDate")) && companyId != 0){
+				try {
+					cDao.updateComputer(new Computer(Integer.parseInt(request.getParameter("update")), name, introducedDate, discontinuedDate, companyId));
+					request.setAttribute("computer", new Computer(name, introducedDate, discontinuedDate, companyId));
+					request.setAttribute("formState", "Update");
+					request.setAttribute("ajout", "L'ordinateur a été modifié avec succés.");
+				} catch (NamingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else{
 				request.setAttribute("formState", "Update");
-				request.setAttribute("ajout", "L'ordinateur a été modifié avec succés.");
-			} catch (NamingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				request.setAttribute("ajout", "L'ordinateur n'a pas été modifié. Certains champs doivent être incorrects.");
+				log.info("Ordinateur non modifié - Certains champs doivent être incorrects.");
 			}
 		}
 		

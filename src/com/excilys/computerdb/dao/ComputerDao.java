@@ -102,7 +102,7 @@ public class ComputerDao {
 		*/
 		Connection cn = DBConnection.getConnection();
 		
-		PreparedStatement st = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, co.name FROM computer AS c JOIN company AS co on c.company_id = co.id where c.name LIKE ? OR co.name LIKE ?");
+		PreparedStatement st = cn.prepareStatement("SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, co.name FROM computer AS c LEFT JOIN company AS co on c.company_id = co.id where c.name LIKE ? OR co.name LIKE ?");
 		st.setString(1, "%"+seed+"%");
 		st.setString(2, "%"+seed+"%");
 		ResultSet rs = st.executeQuery();
