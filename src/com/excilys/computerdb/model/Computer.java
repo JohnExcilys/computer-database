@@ -7,98 +7,58 @@ public class Computer {
 	private String name;
 	private Date introduced;
 	private Date discontinued;
-	private int companyId;
-	private String companyName;
+	private Company company;
 
-	// Getter et Setter
-	public int getid() {
+	public int getId() {
 		return id;
 	}
 
-	public void setid(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getname() {
+	public String getName() {
 		return name;
 	}
 
-	public void setname(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public Date getintroduced() {
+	public Date getIntroduced() {
 		return introduced;
 	}
 
-	public void setintroduced(Date introduced) {
+	public void setIntroduced(Date introduced) {
 		this.introduced = introduced;
 	}
 
-	public Date getdiscontinued() {
+	public Date getDiscontinued() {
 		return discontinued;
 	}
 
-	public void setdiscontinued(Date discontinued) {
+	public void setDiscontinued(Date discontinued) {
 		this.discontinued = discontinued;
 	}
 
-	public int getcompanyId() {
-		return companyId;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setcompanyId(int companyId) {
-		this.companyId = companyId;
-	}
-	
-	public String getcompanyName() {
-		return companyName;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
-	public void setcompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
-	// Methodes
 	public Computer() {
-		this.id = 0;
-		this.name = "";
-		this.introduced = null;
-		this.discontinued = null;
-		this.companyId = 0;
-	}
-	
-	public Computer(String name, Date introduced, Date discontinued,int companyId) {
-		this.id = 0;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.companyId = companyId;
 	}
 
-	public Computer(int id, String name, Date introduced, Date discontinued, int companyId) {
+	public Computer(int id, String name, Date introduced, Date discontinued,
+			Company company) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.companyId = companyId;
-	}
-	
-	public Computer(int id, String name, Date introduced, Date discontinued, int companyId, String companyName) {
-		this.id = id;
-		this.name = name;
-		this.introduced = introduced;
-		this.discontinued = discontinued;
-		this.companyId = companyId;
-		this.companyName = companyName;
-	}
-
-	@Override
-	public String toString() {
-		return "Computer [id=" + id + ", name=" + name + ", introduced="
-				+ introduced + ", discontinued=" + discontinued
-				+ ", companyId=" + companyId + ", companyName=" + companyName
-				+ "]";
+		this.company = company;
 	}
 
 }

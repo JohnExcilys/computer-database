@@ -1,10 +1,11 @@
 <jsp:include page="include/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <section id="main">
 	<c:out value="${requestScope['ajout']}" default=""/>
 	<h1><c:out value="${requestScope['formState']}" default=""/> Computer</h1>
 
-	<form action="<c:out value="${requestScope['action']}" default=""/>" method="POST">
+	<form action=<c:out value="${requestScope['action']}" default=""/> method="POST">
 		<fieldset>
 			<div class="clearfix">
 				<label for="name">Computer name:</label>
@@ -41,7 +42,7 @@
 		</fieldset>
 		<div class="actions">
 			<input type="submit" value="<c:out value="${requestScope['formState']}" default=""/>" class="btn primary"> or <a
-				href="DashboardServlet?page=1" class="btn">Cancel</a>
+				href="dashboard" class="btn">Cancel</a>
 		</div>
 	</form>
 </section>
