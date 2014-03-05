@@ -1,3 +1,4 @@
+
 <%
-response.sendRedirect("dashboard");
+	response.sendRedirect("dashboard");
 %>

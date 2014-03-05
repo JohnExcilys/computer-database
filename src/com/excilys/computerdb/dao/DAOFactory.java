@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 public class DAOFactory {
 	private static DAOFactory _instance = null;
 	static Logger log = Logger.getLogger(DAOFactory.class.getName());
-	
+
 	// Initialisation du Singleton
 	private DAOFactory() {
 
@@ -18,12 +18,12 @@ public class DAOFactory {
 		}
 		return _instance;
 	}
-	
-	public DAOComputer getDAOComputer(){
+
+	public DAOComputer getDAOComputer() {
 		return DAOComputer.getInstance();
 	}
-	
-	public DAOCompany getDAOCompany(){
+
+	public DAOCompany getDAOCompany() {
 		return DAOCompany.getInstance();
 	}
 }

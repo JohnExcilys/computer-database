@@ -46,7 +46,7 @@ public class DAOCompany {
 		rs.close();
 		st.close();
 		cn.close();
-
+		
 		return companyList;
 	}
 }

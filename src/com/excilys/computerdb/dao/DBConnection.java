@@ -1,4 +1,5 @@
 package com.excilys.computerdb.dao;
+
 import java.sql.SQLException;
 
 import com.jolbox.bonecp.BoneCP;
@@ -7,8 +8,9 @@ import java.sql.Connection;
 
 public class DBConnection {
 	private static BoneCP connectionPool = null;
+	private static ThreadLocal<Connection> currentCon = new ThreadLocal<>();
 	
-	public static void Initialize() throws SQLException{
+	public static void initialize() throws SQLException {
 		try {
 			// load the database driver (make sure this is in your classpath!)
 			Class.forName("com.mysql.jdbc.Driver");
@@ -16,21 +18,33 @@ public class DBConnection {
 			e.printStackTrace();
 			return;
 		}
-			// setup the connection pool
-			BoneCPConfig config = new BoneCPConfig();
-			config.setJdbcUrl("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull"); // jdbc url specific to your database, eg jdbc:mysql://127.0.0.1/yourdb
-			config.setUsername("root"); 
-			config.setPassword("admin");
-			config.setMinConnectionsPerPartition(5);
-			config.setMaxConnectionsPerPartition(10);
-			config.setPartitionCount(1);
-			connectionPool = new BoneCP(config); // setup the connection pool
+		// setup the connection pool
+		BoneCPConfig config = new BoneCPConfig();
+		config.setJdbcUrl("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull");
+		config.setUsername("root");
+		config.setPassword("admin");
+		connectionPool = new BoneCP(config); // setup the connection pool
 	}
 	
 	public static Connection getConnection() throws SQLException{
-		if(connectionPool == null){
-			Initialize();
+		return currentCon.get();
+	}
+
+	public static void openConnection() throws SQLException {
+		if (connectionPool == null) {
+			initialize();
 		}
-		return connectionPool.getConnection();
+		if (currentCon != null && currentCon.get() != null && !currentCon.get().isClosed()) {
+			currentCon.get().close();
+		}
+		currentCon.set(connectionPool.getConnection());
+	}
+
+	public static void closeConnection() throws SQLException {
+
+		if (currentCon != null && currentCon.get() != null
+				&& !currentCon.get().isClosed()) {
+			currentCon.get().close();
+		}
 	}
 }

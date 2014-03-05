@@ -2,7 +2,6 @@ package com.excilys.computerdb.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.model.ComputerOrder;
 import com.excilys.computerdb.service.ServiceComputer;
 
@@ -23,21 +21,23 @@ import com.excilys.computerdb.service.ServiceComputer;
 @WebServlet("/dashboard")
 public class ServletDashboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletDashboard() {
-        super();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public ServletDashboard() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = getServletContext().getRequestDispatcher(
 				"/dashboard.jsp");
-		
+
 		int page = 1;
 		int numberOfPage = 1;
 		if (request.getParameter("page") != null) {
@@ -61,10 +61,8 @@ public class ServletDashboard extends HttpServlet {
 				if (page < 1 || page > numberOfPage) {
 					page = 1;
 				}
-				request.setAttribute(
-						"computers",
-						ServiceComputer.getInstance().findAllByCreteria(null,
-								order, (page - 1) * 10, 10));
+				request.setAttribute("computers", ServiceComputer.getInstance()
+						.findAllByCreteria(null, order, (page - 1) * 10, 10));
 			} else {
 				numberOfResult = ServiceComputer.getInstance().count(
 						request.getParameter("search"));
@@ -89,12 +87,14 @@ public class ServletDashboard extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
 	}
-	
+
 	public ComputerOrder getOrder(HttpServletRequest request) {
 		ComputerOrder order = null;
 		if (request.getParameter("order") != null) {

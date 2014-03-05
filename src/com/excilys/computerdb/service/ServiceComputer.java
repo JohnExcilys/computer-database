@@ -5,7 +5,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -17,7 +16,6 @@ import com.excilys.computerdb.dao.DBConnection;
 import com.excilys.computerdb.model.Company;
 import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.model.ComputerOrder;
-import com.mysql.jdbc.Connection;
 
 public class ServiceComputer {
 	private static ServiceComputer _instance = null;
@@ -37,7 +35,16 @@ public class ServiceComputer {
 	}
 
 	public ArrayList<Computer> getComputers() throws SQLException {
-		return DAOFactory.getInstance().getDAOComputer().getComputers();
+		ArrayList<Computer> computerList;
+
+		try {
+			DBConnection.openConnection();
+			computerList = DAOFactory.getInstance().getDAOComputer()
+					.getComputers();
+		} finally {
+			DBConnection.closeConnection();
+		}
+		return computerList;
 	}
 
 	public boolean saveComputer(int id, String name, String introduced,
@@ -47,18 +54,29 @@ public class ServiceComputer {
 
 		if (!name.equals("") && isDateValid(introduced)
 				&& isDateValid(discontinued) && company.getid() != 0) {
-			DAOFactory
-					.getInstance()
-					.getDAOComputer()
-					.saveComputer(
-							new Computer(id, name, df.parse(introduced), df
-									.parse(discontinued), company));
+
+			try {
+				DBConnection.openConnection();
+				DAOFactory
+						.getInstance()
+						.getDAOComputer()
+						.saveComputer(
+								new Computer(id, name, df.parse(introduced), df
+										.parse(discontinued), company));
+			} finally {
+				DBConnection.closeConnection();
+			}
 		}
 		return false;
 	}
 
 	public void deleteComputer(int id) throws NamingException, SQLException {
-		DAOFactory.getInstance().getDAOComputer().deleteComputer(id);
+		try {
+			DBConnection.openConnection();
+			DAOFactory.getInstance().getDAOComputer().deleteComputer(id);
+		} finally {
+			DBConnection.closeConnection();
+		}
 	}
 
 	public static boolean isDateValid(String date) {
@@ -77,8 +95,12 @@ public class ServiceComputer {
 
 	public int count(String search) throws SQLException {
 		int count = 0;
-		count = DAOFactory.getInstance().getDAOComputer().count(search);
-
+		try {
+			DBConnection.openConnection();
+			count = DAOFactory.getInstance().getDAOComputer().count(search);
+		} finally {
+			DBConnection.closeConnection();
+		}
 		return count;
 	}
 
@@ -86,9 +108,13 @@ public class ServiceComputer {
 			int startAt, int numberOfRows) throws SQLException {
 
 		List<Computer> computers = null;
-		computers = DAOFactory.getInstance().getDAOComputer()
-				.findAllByCreteria(search, order, startAt, numberOfRows);
-
+		try {
+			DBConnection.openConnection();
+			computers = DAOFactory.getInstance().getDAOComputer()
+					.findAllByCreteria(search, order, startAt, numberOfRows);
+		} finally {
+			DBConnection.closeConnection();
+		}
 		return computers;
 	}
 }

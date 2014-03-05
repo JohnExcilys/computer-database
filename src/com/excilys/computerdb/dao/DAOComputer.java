@@ -119,8 +119,9 @@ public class DAOComputer {
 
 	}
 
-	public ArrayList<Computer> findAllByCreteria(String search, ComputerOrder order,
-			int startAt, int numberOfRows) throws SQLException {
+	public ArrayList<Computer> findAllByCreteria(String search,
+			ComputerOrder order, int startAt, int numberOfRows)
+			throws SQLException {
 		Connection con = null;
 		PreparedStatement statement = null;
 		ResultSet rs = null;
@@ -152,9 +153,11 @@ public class DAOComputer {
 			rs = statement.executeQuery();
 			computers = new ArrayList<>();
 			while (rs.next()) {
-				computers.add(new Computer(rs.getInt("computer.id"), rs.getString("computer.name"),
-						rs.getDate("computer.introduced"), rs.getDate("computer.discontinued"),
-						new Company(rs.getInt("company.id"), rs.getString("company.name"))));
+				computers.add(new Computer(rs.getInt("computer.id"), rs
+						.getString("computer.name"), rs
+						.getDate("computer.introduced"), rs
+						.getDate("computer.discontinued"), new Company(rs
+						.getInt("company.id"), rs.getString("company.name"))));
 			}
 		} finally {
 			try {
@@ -174,7 +177,7 @@ public class DAOComputer {
 		}
 		return computers;
 	}
-	
+
 	public int count(String search) throws SQLException {
 
 		Connection con = null;
