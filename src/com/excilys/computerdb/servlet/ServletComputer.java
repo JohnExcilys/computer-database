@@ -14,17 +14,41 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.computerdb.dao.DAOFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.computerdb.model.Company;
 import com.excilys.computerdb.model.Computer;
+import com.excilys.computerdb.service.ServiceCompany;
 import com.excilys.computerdb.service.ServiceComputer;
 
 /**
  * Servlet implementation class ServletComputer
  */
 @WebServlet("/addComputer")
-public class ServletComputer extends HttpServlet {
+public class ServletComputer extends OverHttpRequest {
 	private static final long serialVersionUID = 1L;
+	@Autowired
+	ServiceCompany serviceCompany;
+	@Autowired
+	ServiceComputer serviceComputer;
+	
+	
+	
+	public ServiceCompany getServiceCompany() {
+		return serviceCompany;
+	}
+
+	public void setServiceCompany(ServiceCompany serviceCompany) {
+		this.serviceCompany = serviceCompany;
+	}
+
+	public ServiceComputer getServiceComputer() {
+		return serviceComputer;
+	}
+
+	public void setServiceComputer(ServiceComputer serviceComputer) {
+		this.serviceComputer = serviceComputer;
+	}
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -44,8 +68,7 @@ public class ServletComputer extends HttpServlet {
 
 		// Add
 		try {
-			request.setAttribute("companies", DAOFactory.getInstance()
-					.getDAOCompany().getCompanies());
+			request.setAttribute("companies", serviceCompany.getCompanies());
 			request.setAttribute("action", "./addComputer");
 		} catch (NamingException | SQLException e) {
 			e.printStackTrace();
@@ -57,11 +80,8 @@ public class ServletComputer extends HttpServlet {
 
 			Computer computer;
 			try {
-				computer = DAOFactory
-						.getInstance()
-						.getDAOComputer()
-						.getComputer(
-								Integer.parseInt(request.getParameter("update")));
+				computer = serviceComputer.getComputer(
+						Integer.parseInt(request.getParameter("update")));
 				request.setAttribute("computer", computer);
 				request.setAttribute("formState", "Update");
 				request.setAttribute("action",
@@ -76,11 +96,8 @@ public class ServletComputer extends HttpServlet {
 		if (request.getParameter("delete") != null) {
 			rd = getServletContext().getRequestDispatcher("/dashboard");
 			try {
-				DAOFactory
-						.getInstance()
-						.getDAOComputer()
-						.deleteComputer(
-								Integer.parseInt(request.getParameter("delete")));
+				serviceComputer.deleteComputer(
+						Integer.parseInt(request.getParameter("delete")));
 			} catch (NumberFormatException | NamingException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -105,7 +122,7 @@ public class ServletComputer extends HttpServlet {
 					&& Integer.parseInt(request.getParameter("company")) != 0) {
 				try {
 					// Add
-					ServiceComputer.getInstance().saveComputer(
+					serviceComputer.saveComputer(
 							0,
 							request.getParameter("name"),
 							request.getParameter("introducedDate"),
@@ -133,7 +150,7 @@ public class ServletComputer extends HttpServlet {
 					&& isDateValid(request.getParameter("discontinuedDate"))
 					&& Integer.parseInt(request.getParameter("company")) != 0) {
 				try {
-					ServiceComputer.getInstance().saveComputer(
+					serviceComputer.saveComputer(
 							Integer.parseInt(request.getParameter("update")),
 							request.getParameter("name"),
 							request.getParameter("introducedDate"),

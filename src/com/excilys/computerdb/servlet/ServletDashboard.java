@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.computerdb.model.ComputerOrder;
 import com.excilys.computerdb.service.ServiceComputer;
 
@@ -19,8 +21,19 @@ import com.excilys.computerdb.service.ServiceComputer;
  * Servlet implementation class ServletDashboard
  */
 @WebServlet("/dashboard")
-public class ServletDashboard extends HttpServlet {
+public class ServletDashboard extends OverHttpRequest {
 	private static final long serialVersionUID = 1L;
+	@Autowired
+	ServiceComputer serviceComputer;
+
+	
+	public ServiceComputer getServiceComputer() {
+		return serviceComputer;
+	}
+
+	public void setServiceComputer(ServiceComputer serviceComputer) {
+		this.serviceComputer = serviceComputer;
+	}
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -34,7 +47,7 @@ public class ServletDashboard extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+		HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = getServletContext().getRequestDispatcher(
 				"/dashboard.jsp");
 
@@ -56,15 +69,15 @@ public class ServletDashboard extends HttpServlet {
 		try {
 			int numberOfResult = 0;
 			if (request.getParameter("search") == null) {
-				numberOfResult = ServiceComputer.getInstance().count(null);
+				numberOfResult = serviceComputer.count(null);
 				numberOfPage = (numberOfResult / 10) + 1;
 				if (page < 1 || page > numberOfPage) {
 					page = 1;
 				}
-				request.setAttribute("computers", ServiceComputer.getInstance()
+				request.setAttribute("computers", serviceComputer
 						.findAllByCreteria(null, order, (page - 1) * 10, 10));
 			} else {
-				numberOfResult = ServiceComputer.getInstance().count(
+				numberOfResult = serviceComputer.count(
 						request.getParameter("search"));
 				numberOfPage = (numberOfResult / 10) + 1;
 				queryParameters.put("search", request.getParameter("search"));
@@ -73,7 +86,7 @@ public class ServletDashboard extends HttpServlet {
 				}
 				request.setAttribute(
 						"computers",
-						ServiceComputer.getInstance().findAllByCreteria(
+						serviceComputer.findAllByCreteria(
 								request.getParameter("search"), order,
 								(page - 1) * 10, 10));
 			}
@@ -81,6 +94,7 @@ public class ServletDashboard extends HttpServlet {
 			request.setAttribute("last_page", numberOfPage);
 			request.setAttribute("number_of_result", numberOfResult);
 		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		request.setAttribute("query_parameters", queryParameters);
 		rd.forward(request, response);
