@@ -3,17 +3,17 @@ package com.excilys.computerdb.model;
 import java.util.Date;
 
 public class Computer {
-	private int id;
+	private Long id;
 	private String name;
 	private Date introduced;
 	private Date discontinued;
 	private Company company;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -52,7 +52,7 @@ public class Computer {
 	public Computer() {
 	}
 
-	public Computer(int id, String name, Date introduced, Date discontinued,
+	public Computer(Long id, String name, Date introduced, Date discontinued,
 			Company company) {
 		this.id = id;
 		this.name = name;

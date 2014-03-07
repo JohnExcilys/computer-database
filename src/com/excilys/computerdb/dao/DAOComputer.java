@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
+import com.excilys.computerdb.dao.mapper.ComputerMapper;
 import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.model.ComputerOrder;
 
@@ -102,7 +103,7 @@ public class DAOComputer extends JdbcDaoSupport{
 		}
 	}
 
-	public Computer getComputer(int id) throws SQLException {
+	public Computer getComputer(Long id) throws SQLException {
 		String query = "SELECT c.id, c.name, c.introduced, c.discontinued, cp.id AS cid, cp.name AS cname FROM computer AS c JOIN company AS cp ON c.company_id=cp.id where c.id = ?";
 		getJdbcTemplate().queryForObject(query, new Object[] { id },
 				new ComputerMapper());
@@ -111,7 +112,7 @@ public class DAOComputer extends JdbcDaoSupport{
 				new ComputerMapper());
 	}
 
-	public void deleteComputer(int id) throws NamingException, SQLException {
+	public void deleteComputer(Long id) throws NamingException, SQLException {
 		String query = "DELETE FROM computer where id = ?";
 		getJdbcTemplate().update(query, new Object[] { id });
 	}
@@ -145,5 +146,8 @@ public class DAOComputer extends JdbcDaoSupport{
 			return getJdbcTemplate().queryForObject(sql, Integer.class,
 					"%" + search + "%");
 		}
+	}
+	
+	public DAOComputer() {
 	}
 }

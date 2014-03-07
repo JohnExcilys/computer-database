@@ -23,6 +23,9 @@ public class ServiceComputer {
 	@Autowired
 	DAOComputer daoComputer;
 	
+	public ServiceComputer() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	public DAOComputer getDaoComputer() {
 		return daoComputer;
@@ -39,7 +42,7 @@ public class ServiceComputer {
 		return computerList;
 	}
 
-	public boolean saveComputer(int id, String name, String introduced,
+	public boolean saveComputer(Long id, String name, String introduced,
 			String discontinued, Company company) throws SQLException,
 			ParseException {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -54,7 +57,7 @@ public class ServiceComputer {
 		return false;
 	}
 
-	public void deleteComputer(int id) throws NamingException, SQLException {
+	public void deleteComputer(Long id) throws NamingException, SQLException {
 		daoComputer.deleteComputer(id);
 	}
 
@@ -87,7 +90,7 @@ public class ServiceComputer {
 		return computers;
 	}
 
-	public Computer getComputer(int id) throws SQLException {
+	public Computer getComputer(Long id) throws SQLException {
 		Computer cp;
 
 		cp = daoComputer.getComputer(id);

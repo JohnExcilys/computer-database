@@ -17,7 +17,7 @@
 	<c:url value="${variableURL}" var="url">
 		<c:param name="page" value="${currentPage - 4}" />
 	</c:url>
-	<a href="${url}"><<</a>
+	<a href="${url}">&lt;&lt;</a>
 </c:if>
 
 <c:if test="${currentPage > 3}">
@@ -76,5 +76,5 @@ ${currentPage}
 	<c:url value="${variableURL}" var="url">
 		<c:param name="page" value="${currentPage + 4}" />
 	</c:url>
-	<a href="${url}">>></a>
+	<a href="${url}">&gt;&gt;</a>
 </c:if>

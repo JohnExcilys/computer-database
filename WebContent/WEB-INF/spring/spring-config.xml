@@ -22,11 +22,11 @@
 
 	<context:component-scan base-package="com.excilys.computerdb" />
 
-	<bean id="daocompany" class="com.excilys.computerdb.dao.DAOCompany">
+	<bean id="daoCompany" class="com.excilys.computerdb.dao.DAOCompany">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<bean id="daocomputer" class="com.excilys.computerdb.dao.DAOComputer">
+	<bean id="daoComputer" class="com.excilys.computerdb.dao.DAOComputer">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 </beans>

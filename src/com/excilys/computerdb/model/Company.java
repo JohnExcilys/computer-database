@@ -1,15 +1,15 @@
 package com.excilys.computerdb.model;
 
 public class Company {
-	private int id;
+	private Long id;
 	private String name;
 
 	// Getter et Setter
-	public int getid() {
+	public Long getid() {
 		return id;
 	}
 
-	public void setid(int id) {
+	public void setid(Long id) {
 		this.id = id;
 	}
 
@@ -23,11 +23,11 @@ public class Company {
 
 	// Methodes
 	public Company() {
-		this.id = 0;
+		this.id = (long) 0;
 		this.name = "";
 	}
 
-	public Company(int id, String name) {
+	public Company(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}

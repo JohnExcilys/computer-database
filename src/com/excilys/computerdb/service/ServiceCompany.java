@@ -28,6 +28,10 @@ public class ServiceCompany {
 	public void setDaoCompany(DAOCompany daoCompany) {
 		this.daoCompany = daoCompany;
 	}
+	
+	public ServiceCompany() {
+		// TODO Auto-generated constructor stub
+	}
 
 
 
