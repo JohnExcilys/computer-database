@@ -43,7 +43,7 @@
 					<td><a href="addComputer?update=${computer.id}">${computer.name}</a></td>
 					<td>${computer.introduced}</td>
 					<td>${computer.discontinued}</td>
-					<td>${computer.company.name}</td>
+					<td>${computer.companyName}</td>
 					<td><a class="btn danger"
 						href="./addComputer?delete=${computer.id}">Delete</a></td>
 				</tr>

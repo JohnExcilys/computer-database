@@ -33,8 +33,6 @@ public class ServiceCompany {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
 	public List<Company> getCompanies() throws SQLException, NamingException{
 		List<Company> companyList;
 		

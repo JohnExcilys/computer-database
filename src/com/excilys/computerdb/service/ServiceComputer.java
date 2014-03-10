@@ -16,6 +16,7 @@ import com.excilys.computerdb.dao.DAOComputer;
 import com.excilys.computerdb.model.Company;
 import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.model.ComputerOrder;
+import com.excilys.computerdb.model.dto.DtoComputer;
 
 @Component
 public class ServiceComputer {
@@ -50,10 +51,16 @@ public class ServiceComputer {
 		if (!name.equals("") && isDateValid(introduced)
 				&& isDateValid(discontinued) && company.getid() != 0) {
 
-			daoComputer.saveComputer(new Computer(id, name, df
-					.parse(introduced), df.parse(discontinued), company));
+			daoComputer.saveComputer(DAOComputer.createDTO(new Computer(id, name, df
+					.parse(introduced), df.parse(discontinued), company)));
 
 		}
+		return false;
+	}
+	
+	public boolean saveComputer(DtoComputer cDTO) throws SQLException,
+			ParseException {
+					daoComputer.saveComputer(cDTO);
 		return false;
 	}
 
