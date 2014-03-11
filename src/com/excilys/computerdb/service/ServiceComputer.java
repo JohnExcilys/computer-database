@@ -10,7 +10,8 @@ import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.computerdb.dao.DAOComputer;
 import com.excilys.computerdb.model.Company;
@@ -18,31 +19,21 @@ import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.model.ComputerOrder;
 import com.excilys.computerdb.model.dto.DtoComputer;
 
-@Component
+@Service
 public class ServiceComputer {
 	Logger log = Logger.getLogger(ServiceComputer.class.getName());
 	@Autowired
 	DAOComputer daoComputer;
 	
-	public ServiceComputer() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public DAOComputer getDaoComputer() {
-		return daoComputer;
-	}
-
-	public void setDaoComputer(DAOComputer daoComputer) {
-		this.daoComputer = daoComputer;
-	}
-
+	@Transactional
 	public List<Computer> getComputers() throws SQLException {
 		List<Computer> computerList;
 		computerList = daoComputer.getComputers();
 		System.out.println(computerList);
 		return computerList;
 	}
-
+	
+	@Transactional
 	public boolean saveComputer(Long id, String name, String introduced,
 			String discontinued, Company company) throws SQLException,
 			ParseException {
@@ -58,16 +49,19 @@ public class ServiceComputer {
 		return false;
 	}
 	
+	@Transactional
 	public boolean saveComputer(DtoComputer cDTO) throws SQLException,
 			ParseException {
 					daoComputer.saveComputer(cDTO);
 		return false;
 	}
 
+	@Transactional
 	public void deleteComputer(Long id) throws NamingException, SQLException {
 		daoComputer.deleteComputer(id);
 	}
 
+	@Transactional
 	public static boolean isDateValid(String date) {
 		try {
 			if (date != "") {
@@ -82,12 +76,14 @@ public class ServiceComputer {
 		return false;
 	}
 
+	@Transactional
 	public int count(String search) throws SQLException {
 		int count = 0;
 		count = daoComputer.count(search);
 		return count;
 	}
 
+	@Transactional
 	public List<Computer> findAllByCreteria(String search, ComputerOrder order,
 			int startAt, int numberOfRows) throws SQLException {
 
@@ -97,6 +93,7 @@ public class ServiceComputer {
 		return computers;
 	}
 
+	@Transactional
 	public Computer getComputer(Long id) throws SQLException {
 		Computer cp;
 

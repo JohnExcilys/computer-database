@@ -20,6 +20,11 @@
 		<property name="password" value="admin" />
 	</bean>
 
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
 	<context:component-scan base-package="com.excilys.computerdb" />
 
 	<bean id="daoCompany" class="com.excilys.computerdb.dao.DAOCompany">
@@ -28,6 +33,20 @@
 
 	<bean id="daoComputer" class="com.excilys.computerdb.dao.DAOComputer">
 		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- Locale source bean -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<!-- Locale source file prefix -->
+		<property name="basename" value="message" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<!-- Default locale (Session) -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="fr_FR" />
 	</bean>
 
 </beans>

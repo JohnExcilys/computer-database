@@ -8,6 +8,7 @@ import javax.naming.NamingException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.computerdb.dao.DAOCompany;
 import com.excilys.computerdb.model.Company;
@@ -19,20 +20,7 @@ public class ServiceCompany {
 	@Autowired
 	DAOCompany daoCompany;
 	
-	public DAOCompany getDaoCompany() {
-		return daoCompany;
-	}
-
-
-
-	public void setDaoCompany(DAOCompany daoCompany) {
-		this.daoCompany = daoCompany;
-	}
-	
-	public ServiceCompany() {
-		// TODO Auto-generated constructor stub
-	}
-
+	@Transactional
 	public List<Company> getCompanies() throws SQLException, NamingException{
 		List<Company> companyList;
 		

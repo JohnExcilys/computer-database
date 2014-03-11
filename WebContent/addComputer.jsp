@@ -2,13 +2,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <jsp:include page="include/header.jsp" />
 
 <section id="main">
-	<c:out value="${requestScope['ajout']}" default="" />
+	<c:out value="${ajout}" default="" />
 	<h1>
-		<c:out value="${requestScope['formState']}" default="" />
-		Computer
+		<spring:message code="${formState=='Add' ? 'label.cAddTitle' : 'label.cUpdateTitle'}"/>
 	</h1>
 	<form:form
 		action="./addComputer${!empty computer ? '?update='.concat(computer.id) : ''}"
@@ -16,42 +16,42 @@
 		<form:hidden path="id" />
 		<fieldset>
 			<div class="clearfix">
-				<label for="name">Computer name:</label>
+				<label for="name"><spring:message code="label.cName"/></label>
 				<div class="input">
 					<form:input path="name" />
-					<span class="help-inline">Required</span>
+					<span class="help-inline"><spring:message code="label.cRequired"/></span>
 					<form:errors path="name" />
 				</div>
 			</div>
 			<div class="clearfix">
-				<label for="introduced">Introduced date:</label>
+				<label for="introduced"><spring:message code="label.cIntroduced"/></label>
 				<div class="input">
 					<form:input type="date" pattern="yyyy-MM-dd" path="introduced" />
 					<span class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
 			<div class="clearfix">
-				<label for="discontinued">Discontinued date:</label>
+				<label for="discontinued"><spring:message code="label.cDiscontinued"/></label>
 				<div class="input">
 					<form:input type="date" pattern="yyyy-MM-dd" path="discontinued" />
 					<span class="help-inline">YYYY-MM-DD</span>
 				</div>
 			</div>
 			<div class="clearfix">
-				<label for="company">Company Name:</label>
+				<label for="company"><spring:message code="label.cCompany"/></label>
 				<div class="input">
 					<form:select path="companyId">
 						<form:option value="0">--</form:option>
 						<form:options items="${companies}" itemValue="id" itemLabel="name" />
 					</form:select>
-					<form:errors path="companyId" />
+					<form:errors path="companyId"/>
 				</div>
 			</div>
 		</fieldset>
 		<div class="actions">
 			<input type="submit"
-				value="<c:out value="${requestScope['formState']}" default="" />"
-				class="btn primary"> or <a href="dashboard" class="btn">Cancel</a>
+				value="<spring:message code="${formState=='Add' ? 'label.cAdd' : 'label.cUpdate'}"/>"
+				class="btn primary"> <a href="dashboard" class="btn"><spring:message code="label.cCancel"/></a>
 		</div>
 	</form:form>
 </section>

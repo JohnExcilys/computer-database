@@ -137,9 +137,7 @@ public class ComputerController {
 				try {
 					// Add
 					serviceComputer.saveComputer(cDTO);
-//					model.addAttribute("formState", "Add");
-//					model.addAttribute("ajout",
-//							"L'ordinateur a été ajouté avec succés.");
+
 					List<Company> companies = new ArrayList<Company>();
 					List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
 					companies = serviceCompany.getCompanies();
@@ -158,9 +156,6 @@ public class ComputerController {
 				} catch (NumberFormatException | SQLException | ParseException e) {
 					e.printStackTrace();
 				}
-//				model.addAttribute("formState", "Update");
-//				model.addAttribute("ajout",
-//						"L'ordinateur a été modifié avec succés.");
 			}
 			if(cDTO.getId() != null && cDTO.getId() !=0){
 				model.addAttribute("formState","Update");

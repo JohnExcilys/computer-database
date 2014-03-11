@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +14,10 @@
 <body>
 	<header class="topbar">
 		<h1 class="fill">
-			<a href="dashboard"> Application - Computer Database </a>
+			<a href="dashboard"> <spring:message code="label.appTitle" />
+			</a>
 		</h1>
+		<span style="float: right"> <a href="?lang=en">English</a> | <a
+			href="?lang=fr">Français</a>
+		</span>
 	</header>
