@@ -77,6 +77,7 @@ public class ComputerController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	protected void doGet(ModelMap model,
+			@RequestParam(required = false) BindingResult result,
 			@RequestParam(required = false) Long update,
 			@RequestParam(required = false) Long delete)
 			throws ServletException, IOException {
@@ -130,45 +131,63 @@ public class ComputerController {
 			@RequestParam(required = false) Long update,
 			@ModelAttribute("cDTO") @Valid DtoComputer cDTO,
 			BindingResult result) throws ServletException, IOException,
-			NamingException {
+			NamingException, SQLException {
 		if (!result.hasErrors()) {
 			if (update == null) {
-					try {
-						// Add
-						serviceComputer.saveComputer(cDTO);
-						model.addAttribute("formState", "Add");
-						model.addAttribute("ajout",
-								"L'ordinateur a été ajouté avec succés.");
-						List<Company> companies = new ArrayList<Company>();
-						List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
-						companies = serviceCompany.getCompanies();
-						for (Company c : companies) {
-							companiesDto.add(DAOCompany.createDTO(c));
-						}
-						System.out.println(companiesDto);
-						model.addAttribute("companies", companiesDto);
-					} catch (NumberFormatException | SQLException
-							| ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+				try {
+					// Add
+					serviceComputer.saveComputer(cDTO);
+//					model.addAttribute("formState", "Add");
+//					model.addAttribute("ajout",
+//							"L'ordinateur a été ajouté avec succés.");
+					List<Company> companies = new ArrayList<Company>();
+					List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
+					companies = serviceCompany.getCompanies();
+					for (Company c : companies) {
+						companiesDto.add(DAOCompany.createDTO(c));
 					}
+					model.addAttribute("companies", companiesDto);
+				} catch (NumberFormatException | SQLException | ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else {
 				// Update
-					try {
-						serviceComputer.saveComputer(cDTO);
-					} catch (NumberFormatException | SQLException
-							| ParseException e) {
-						e.printStackTrace();
-					}
-					model.addAttribute("formState", "Update");
-					model.addAttribute("ajout",
-							"L'ordinateur a été modifié avec succés.");
+				try {
+					serviceComputer.saveComputer(cDTO);
+				} catch (NumberFormatException | SQLException | ParseException e) {
+					e.printStackTrace();
+				}
+//				model.addAttribute("formState", "Update");
+//				model.addAttribute("ajout",
+//						"L'ordinateur a été modifié avec succés.");
+			}
+			if(cDTO.getId() != null && cDTO.getId() !=0){
+				model.addAttribute("formState","Update");
+				model.addAttribute("ajout",
+						"L'ordinateur a été modifié avec succés.");
+			}else{
+				model.addAttribute("formState","Add");
+				model.addAttribute("ajout",
+						"L'ordinateur a été ajouté avec succés.");
 			}
 			model.addAttribute("cDTO", cDTO);
 		} else {
-			model.addAttribute("ajout", "L'ordinateur n'a pas été ajouté/modifié. Un ordinateur doit avoir un nom et une companie.");
+			// Affichage des erreurs via <form:errors/> dans la jsp
+			List<Company> companies = new ArrayList<Company>();
+			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
+			companies = serviceCompany.getCompanies();
+			for (Company c : companies) {
+				companiesDto.add(DAOCompany.createDTO(c));
+			}
+			model.addAttribute("companies", companiesDto);
+			if(cDTO.getId() != null && cDTO.getId() !=0){
+				model.addAttribute("formState","Update");
+			}else{
+				model.addAttribute("formState","Add");
+			}
+			
 		}
-		doGet(model, cDTO.getId(), null);
 	}
 
 	@InitBinder

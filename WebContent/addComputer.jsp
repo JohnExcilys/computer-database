@@ -10,11 +10,9 @@
 		<c:out value="${requestScope['formState']}" default="" />
 		Computer
 	</h1>
-
 	<form:form
 		action="./addComputer${!empty computer ? '?update='.concat(computer.id) : ''}"
-		method="POST"
-		commandName="cDTO">
+		method="POST" commandName="cDTO">
 		<form:hidden path="id" />
 		<fieldset>
 			<div class="clearfix">
@@ -22,6 +20,7 @@
 				<div class="input">
 					<form:input path="name" />
 					<span class="help-inline">Required</span>
+					<form:errors path="name" />
 				</div>
 			</div>
 			<div class="clearfix">
@@ -43,14 +42,15 @@
 				<div class="input">
 					<form:select path="companyId">
 						<form:option value="0">--</form:option>
-						<form:options items="${companies}"
-							itemValue="id" itemLabel="name" />
+						<form:options items="${companies}" itemValue="id" itemLabel="name" />
 					</form:select>
+					<form:errors path="companyId" />
 				</div>
 			</div>
 		</fieldset>
 		<div class="actions">
-			<input type="submit" value="<c:out value="${requestScope['formState']}" default="" />"
+			<input type="submit"
+				value="<c:out value="${requestScope['formState']}" default="" />"
 				class="btn primary"> or <a href="dashboard" class="btn">Cancel</a>
 		</div>
 	</form:form>

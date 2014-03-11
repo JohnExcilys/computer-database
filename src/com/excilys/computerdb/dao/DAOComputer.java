@@ -1,7 +1,6 @@
 package com.excilys.computerdb.dao;
 
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -29,64 +28,18 @@ public class DAOComputer extends JdbcDaoSupport {
 	public void saveComputer(DtoComputer computer) throws SQLException {
 		String query = "INSERT INTO computer (id, name, introduced, discontinued, company_id)  VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, introduced = ?, discontinued = ?, company_id = ?";
 		System.out.println(computer);
+			getJdbcTemplate()
+					.update(query,
+							new Object[] { computer.getId(),
+									computer.getName(),
+									computer.getIntroduced(),
+									computer.getDiscontinued(),
+									computer.getCompanyId(),
+									computer.getName(),
+									computer.getIntroduced(),
+									computer.getDiscontinued(),
+									computer.getCompanyId() });
 
-		if (computer.getId() == null ) {
-			if (computer.getCompanyId() == 0) {
-				getJdbcTemplate().update(
-						query,
-						new Object[] {
-								computer.getId(),
-								computer.getName(),
-								computer.getIntroduced(),
-								computer.getDiscontinued(),
-								Types.INTEGER,
-								computer.getName(),
-								computer.getIntroduced(),
-								computer.getDiscontinued(),
-								computer.getCompanyId() });
-			} else {
-				getJdbcTemplate().update(
-						query,
-						new Object[] {
-								computer.getId(),
-								computer.getName(),
-								computer.getIntroduced(),
-								computer.getDiscontinued(),
-								computer.getCompanyId(),
-								computer.getName(),
-								computer.getIntroduced(),
-								computer.getDiscontinued(),
-								computer.getCompanyId() });
-			}
-		} else {
-			if (computer.getCompanyId() == 0) {
-				getJdbcTemplate().update(
-						query,
-						new Object[] {
-								Types.INTEGER,
-								computer.getName(),
-								computer.getIntroduced(),
-								computer.getDiscontinued(),
-								Types.INTEGER,
-								computer.getName(),
-								computer.getIntroduced(),
-								computer.getDiscontinued(),
-								computer.getCompanyId() });
-			} else {
-				getJdbcTemplate().update(
-						query,
-						new Object[] {
-								Types.INTEGER,
-								computer.getName(),
-								computer.getIntroduced(),
-								computer.getDiscontinued(),
-								computer.getCompanyId(),
-								computer.getName(),
-								computer.getIntroduced(),
-								computer.getDiscontinued(),
-								computer.getCompanyId() });
-			}
-		}
 	}
 
 	public Computer getComputer(Long id) throws SQLException {
