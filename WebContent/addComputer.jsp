@@ -50,7 +50,7 @@
 			</div>
 		</fieldset>
 		<div class="actions">
-			<input type="submit" value="${!empty computer ? 'Update' : 'Add'}"
+			<input type="submit" value="<c:out value="${requestScope['formState']}" default="" />"
 				class="btn primary"> or <a href="dashboard" class="btn">Cancel</a>
 		</div>
 	</form:form>

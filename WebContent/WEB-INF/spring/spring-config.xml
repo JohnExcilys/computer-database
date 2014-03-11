@@ -29,4 +29,5 @@
 	<bean id="daoComputer" class="com.excilys.computerdb.dao.DAOComputer">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+
 </beans>

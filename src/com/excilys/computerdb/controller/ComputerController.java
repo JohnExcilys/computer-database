@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.excilys.computerdb.controller.validator.ComputerValidator;
 import com.excilys.computerdb.dao.DAOCompany;
 import com.excilys.computerdb.dao.DAOComputer;
 import com.excilys.computerdb.model.Company;
@@ -42,6 +45,9 @@ public class ComputerController {
 	@Autowired
 	ServiceComputer serviceComputer;
 
+	@Autowired
+	private ComputerValidator computerValidator;
+
 	public ServiceCompany getServiceCompany() {
 		return serviceCompany;
 	}
@@ -58,6 +64,14 @@ public class ComputerController {
 		this.serviceComputer = serviceComputer;
 	}
 
+	public ComputerValidator getComputerValidator() {
+		return computerValidator;
+	}
+
+	public void setComputerValidator(ComputerValidator computerValidator) {
+		this.computerValidator = computerValidator;
+	}
+
 	public ComputerController() {
 	}
 
@@ -69,7 +83,7 @@ public class ComputerController {
 
 		DtoComputer cDTO = new DtoComputer();
 		model.addAttribute("cDTO", cDTO);
-		
+
 		// Add
 		try {
 			List<Company> companies = new ArrayList<Company>();
@@ -114,50 +128,49 @@ public class ComputerController {
 	@RequestMapping(method = RequestMethod.POST)
 	protected void doPost(ModelMap model,
 			@RequestParam(required = false) Long update,
-			@ModelAttribute DtoComputer cDTO)
-			throws ServletException, IOException, NamingException {
-		
-		if (update == null) {
-			if (!cDTO.getName().equals("") &&  cDTO.getCompanyId() != 0) {
-				try {
-					// Add
-					serviceComputer.saveComputer(cDTO);
-					model.addAttribute("formState", "Add");
-					model.addAttribute("ajout",
-							"L'ordinateur a été ajouté avec succés.");
-					List<Company> companies = new ArrayList<Company>();
-					List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
-					companies = serviceCompany.getCompanies();
-					for (Company c : companies) {
-						companiesDto.add(DAOCompany.createDTO(c));
+			@ModelAttribute("cDTO") @Valid DtoComputer cDTO,
+			BindingResult result) throws ServletException, IOException,
+			NamingException {
+		if (!result.hasErrors()) {
+			if (update == null) {
+					try {
+						// Add
+						serviceComputer.saveComputer(cDTO);
+						model.addAttribute("formState", "Add");
+						model.addAttribute("ajout",
+								"L'ordinateur a été ajouté avec succés.");
+						List<Company> companies = new ArrayList<Company>();
+						List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
+						companies = serviceCompany.getCompanies();
+						for (Company c : companies) {
+							companiesDto.add(DAOCompany.createDTO(c));
+						}
+						System.out.println(companiesDto);
+						model.addAttribute("companies", companiesDto);
+					} catch (NumberFormatException | SQLException
+							| ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					System.out.println(companiesDto);
-					model.addAttribute("companies", companiesDto);
-				} catch (NumberFormatException | SQLException | ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			} else {
-				model.addAttribute("formState", "Add");
-				model.addAttribute("ajout",
-						"L'ordinateur n'a pas été ajouté. Certains champs doivent être incorrects.");
+				// Update
+					try {
+						serviceComputer.saveComputer(cDTO);
+					} catch (NumberFormatException | SQLException
+							| ParseException e) {
+						e.printStackTrace();
+					}
+					model.addAttribute("formState", "Update");
+					model.addAttribute("ajout",
+							"L'ordinateur a été modifié avec succés.");
 			}
+			model.addAttribute("cDTO", cDTO);
 		} else {
-			// Update
-			if (!cDTO.getName().equals("") && cDTO.getCompanyId() != 0) {
-				try {
-					serviceComputer.saveComputer(cDTO);
-				} catch (NumberFormatException | SQLException | ParseException e) {
-					e.printStackTrace();
-				}
-				model.addAttribute("formState", "Update");
-				model.addAttribute("ajout",
-						"L'ordinateur a été modifié avec succés.");
-			}
+			model.addAttribute("ajout", "L'ordinateur n'a pas été ajouté/modifié. Un ordinateur doit avoir un nom et une companie.");
 		}
-		model.addAttribute("cDTO", cDTO);
+		doGet(model, cDTO.getId(), null);
 	}
-	
+
 	@InitBinder
 	private void dateBinder(WebDataBinder binder) {
 		// The date format to parse or output your dates
@@ -166,6 +179,6 @@ public class ComputerController {
 		CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
 		// Register it as custom editor for the Date type
 		binder.registerCustomEditor(Date.class, editor);
-		//binder.addValidators(computerValidator);
+		binder.addValidators(computerValidator);
 	}
 }
