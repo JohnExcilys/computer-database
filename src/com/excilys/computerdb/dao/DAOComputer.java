@@ -1,6 +1,7 @@
 package com.excilys.computerdb.dao;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -27,18 +28,21 @@ public class DAOComputer extends JdbcDaoSupport {
 
 	public void saveComputer(DtoComputer computer) throws SQLException {
 		String query = "INSERT INTO computer (id, name, introduced, discontinued, company_id)  VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, introduced = ?, discontinued = ?, company_id = ?";
-		System.out.println(computer);
-			getJdbcTemplate()
-					.update(query,
-							new Object[] { computer.getId(),
-									computer.getName(),
-									computer.getIntroduced(),
-									computer.getDiscontinued(),
-									computer.getCompanyId(),
-									computer.getName(),
-									computer.getIntroduced(),
-									computer.getDiscontinued(),
-									computer.getCompanyId() });
+		getJdbcTemplate().update(
+				query,
+				new Object[] {
+						computer.getId(),
+						computer.getName(),
+						new Timestamp(computer.getIntroduced().toDate()
+								.getTime()),
+						new Timestamp(computer.getDiscontinued().toDate()
+								.getTime()),
+						computer.getCompanyId(),
+						computer.getName(),
+						new Timestamp(computer.getIntroduced().toDate()
+								.getTime()),
+						new Timestamp(computer.getDiscontinued().toDate()
+								.getTime()), computer.getCompanyId() });
 
 	}
 

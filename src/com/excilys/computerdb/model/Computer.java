@@ -1,12 +1,12 @@
 package com.excilys.computerdb.model;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
 
 public class Computer {
 	private Long id;
 	private String name;
-	private Date introduced;
-	private Date discontinued;
+	private LocalDate introduced;
+	private LocalDate discontinued;
 	private Company company;
 
 	public Long getId() {
@@ -25,19 +25,19 @@ public class Computer {
 		this.name = name;
 	}
 
-	public Date getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
-	public Date getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 
@@ -52,8 +52,8 @@ public class Computer {
 	public Computer() {
 	}
 
-	public Computer(Long id, String name, Date introduced, Date discontinued,
-			Company company) {
+	public Computer(Long id, String name, LocalDate introduced,
+			LocalDate discontinued, Company company) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;

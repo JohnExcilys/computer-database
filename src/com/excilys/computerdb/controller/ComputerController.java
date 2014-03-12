@@ -3,9 +3,7 @@ package com.excilys.computerdb.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -15,7 +13,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -76,11 +73,11 @@ public class ComputerController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	protected void doGet(ModelMap model,
+	protected String doGet(ModelMap model,
 			@RequestParam(required = false) BindingResult result,
 			@RequestParam(required = false) Long update,
 			@RequestParam(required = false) Long delete)
-			throws ServletException, IOException {
+			throws ServletException, IOException, NamingException {
 
 		DtoComputer cDTO = new DtoComputer();
 		model.addAttribute("cDTO", cDTO);
@@ -109,6 +106,8 @@ public class ComputerController {
 						.getComputer(update));
 				model.addAttribute("cDTO", cDTO);
 				model.addAttribute("formState", "Update");
+				model.addAttribute("action",
+						"./addComputer?update=" + cDTO.getId());
 			} catch (NumberFormatException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -119,15 +118,18 @@ public class ComputerController {
 		if (delete != null) {
 			try {
 				serviceComputer.deleteComputer(delete);
+				model.addAttribute("ajout", "label.computer.delete.success");
 			} catch (NumberFormatException | NamingException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+
+		return "addComputer";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	protected void doPost(ModelMap model,
+	protected String doPost(ModelMap model,
 			@RequestParam(required = false) Long update,
 			@ModelAttribute("cDTO") @Valid DtoComputer cDTO,
 			BindingResult result) throws ServletException, IOException,
@@ -136,6 +138,7 @@ public class ComputerController {
 			if (update == null) {
 				try {
 					// Add
+					System.out.println("Add controller");
 					serviceComputer.saveComputer(cDTO);
 
 					List<Company> companies = new ArrayList<Company>();
@@ -157,14 +160,20 @@ public class ComputerController {
 					e.printStackTrace();
 				}
 			}
-			if(cDTO.getId() != null && cDTO.getId() !=0){
-				model.addAttribute("formState","Update");
-				model.addAttribute("ajout",
-						"L'ordinateur a été modifié avec succés.");
-			}else{
-				model.addAttribute("formState","Add");
-				model.addAttribute("ajout",
-						"L'ordinateur a été ajouté avec succés.");
+			if (cDTO.getId() != null && cDTO.getId() != 0) {
+				model.addAttribute("formState", "Update");
+				model.addAttribute("ajout", "label.computer.update.success");
+				List<Company> companies = new ArrayList<Company>();
+				List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
+
+				companies = serviceCompany.getCompanies();
+				for (Company c : companies) {
+					companiesDto.add(DAOCompany.createDTO(c));
+				}
+				model.addAttribute("companies", companiesDto);
+			} else {
+				model.addAttribute("formState", "Add");
+				model.addAttribute("ajout", "label.computer.add.success");
 			}
 			model.addAttribute("cDTO", cDTO);
 		} else {
@@ -176,23 +185,20 @@ public class ComputerController {
 				companiesDto.add(DAOCompany.createDTO(c));
 			}
 			model.addAttribute("companies", companiesDto);
-			if(cDTO.getId() != null && cDTO.getId() !=0){
-				model.addAttribute("formState","Update");
-			}else{
-				model.addAttribute("formState","Add");
+			if (cDTO.getId() != null && cDTO.getId() != 0) {
+				model.addAttribute("formState", "Update");
+				model.addAttribute("action",
+						"./addComputer?update=" + cDTO.getId());
+			} else {
+				model.addAttribute("formState", "Add");
 			}
-			
 		}
+
+		return "addComputer";
 	}
 
 	@InitBinder
-	private void dateBinder(WebDataBinder binder) {
-		// The date format to parse or output your dates
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		// Create a new CustomDateEditor
-		CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
-		// Register it as custom editor for the Date type
-		binder.registerCustomEditor(Date.class, editor);
+	private void binder(WebDataBinder binder) {
 		binder.addValidators(computerValidator);
 	}
 }

@@ -15,17 +15,15 @@ import com.excilys.computerdb.model.Company;
 
 @Service
 public class ServiceCompany {
-	//private static ServiceCompany _instance = null;
 	Logger log = Logger.getLogger(ServiceCompany.class.getName());
 	@Autowired
 	DAOCompany daoCompany;
-	
-	@Transactional
-	public List<Company> getCompanies() throws SQLException, NamingException{
-		List<Company> companyList;
-		
-		companyList = daoCompany.getCompanies();
 
+	@Transactional
+	public List<Company> getCompanies() throws SQLException, NamingException {
+		List<Company> companyList;
+
+		companyList = daoCompany.getCompanies();
 		return companyList;
 	}
 }

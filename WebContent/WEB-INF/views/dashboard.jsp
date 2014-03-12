@@ -25,18 +25,18 @@
 			<tr>
 				<!-- Variable declarations for passing labels as parameters -->
 				<th><a
-					href="./dashboard?order=${ order == 'ORDER_BY_NAME_ASC' ? 'orderByNameDesc' : 'orderByNameAsc'}${!empty param.search ? '&search='.concat(param.search) : ''}"><spring:message
+					href="./dashboard?order=${ order == 'ORDER_BY_NAME_ASC' ? 'orderByNameDesc' : 'orderByNameAsc'}${!empty param.search ? '&search='.concat(param.search) : ''}${!empty param.lang ? '&lang='.concat(param.lang) : ''}"><spring:message
 							code="label.computerName" /></a>&nbsp;${ order == 'ORDER_BY_NAME_ASC' ? 'ASC' : ''}${ order == 'ORDER_BY_NAME_DESC' ? 'DESC' : ''}</th>
 				<th><a
-					href="./dashboard?order=${ order == 'ORDER_BY_INTRODUCED_DATE_ASC' ? 'orderByIntroducedDateDesc' : 'orderByIntroducedDateAsc'}${!empty param.search ? '&search='.concat(param.search) : ''}"><spring:message
+					href="./dashboard?order=${ order == 'ORDER_BY_INTRODUCED_DATE_ASC' ? 'orderByIntroducedDateDesc' : 'orderByIntroducedDateAsc'}${!empty param.search ? '&search='.concat(param.search) : ''}${!empty param.lang ? '&lang='.concat(param.lang) : ''}"><spring:message
 							code="label.introduced" /></a>&nbsp;${ order == 'ORDER_BY_INTRODUCED_DATE_ASC' ? 'ASC' : ''}${order == 'ORDER_BY_INTRODUCED_DATE_DESC' ? 'DESC' : ''}</th>
 				<!-- Table header for Discontinued Date -->
 				<th><a
-					href="./dashboard?order=${ order == 'ORDER_BY_DISCONTINUED_DATE_ASC' ? 'orderByDiscontinuedDateDesc' : 'orderByDiscontinuedDateAsc'}${!empty param.search ? '&search='.concat(param.search) : ''}"><spring:message
+					href="./dashboard?order=${ order == 'ORDER_BY_DISCONTINUED_DATE_ASC' ? 'orderByDiscontinuedDateDesc' : 'orderByDiscontinuedDateAsc'}${!empty param.search ? '&search='.concat(param.search) : ''}${!empty param.lang ? '&lang='.concat(param.lang) : ''}"><spring:message
 							code="label.discontinued" /> </a>&nbsp;${ order == 'ORDER_BY_DISCONTINUED_DATE_ASC' ? 'ASC' : ''}${ order == 'ORDER_BY_DISCONTINUED_DATE_DESC' ? 'DESC' : ''}</th>
 				<!-- Table header for Company -->
 				<th><a
-					href="./dashboard?order=${ order == 'ORDER_BY_COMPANY_NAME_ASC' ? 'orderByCompanyNameDesc' : 'orderByCompanyNameAsc'}${!empty param.search ? '&search='.concat(param.search) : ''}"><spring:message
+					href="./dashboard?order=${ order == 'ORDER_BY_COMPANY_NAME_ASC' ? 'orderByCompanyNameDesc' : 'orderByCompanyNameAsc'}${!empty param.search ? '&search='.concat(param.search) : ''}${!empty param.lang ? '&lang='.concat(param.lang) : ''}"><spring:message
 							code="label.company" /></a>&nbsp;${ order == 'ORDER_BY_COMPANY_NAME_ASC' ? 'ASC' : ''}${ order == 'ORDER_BY_COMPANY_NAME_DESC' ? 'DESC' : ''}</th>
 				<!--  Header pour suppression -->
 				<th><spring:message code="label.delete" /></th>

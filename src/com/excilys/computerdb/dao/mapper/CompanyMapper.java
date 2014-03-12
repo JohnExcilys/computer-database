@@ -13,5 +13,4 @@ public class CompanyMapper implements RowMapper<Company> {
 	public Company mapRow(ResultSet rs, int rowNumber) throws SQLException {
 		return new Company(rs.getLong(1), rs.getString(2));
 	}
-
 }

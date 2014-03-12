@@ -1,12 +1,15 @@
 package com.excilys.computerdb.model.dto;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class DtoComputer {
 	private Long id;
 	private String name;
-	private Date introduced;
-	private Date discontinued;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate introduced;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate discontinued;
 	private Long companyId;
 	private String companyName;
 
@@ -26,19 +29,19 @@ public class DtoComputer {
 		this.name = name;
 	}
 
-	public Date getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
-	public void setIntroduced(Date introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
-	public Date getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 
@@ -58,8 +61,8 @@ public class DtoComputer {
 		this.companyName = companyName;
 	}
 
-	public DtoComputer(Long id, String name, Date introduced,
-			Date discontinued, Long companyId, String companyName) {
+	public DtoComputer(Long id, String name, LocalDate introduced,
+			LocalDate discontinued, Long companyId, String companyName) {
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
@@ -75,7 +78,7 @@ public class DtoComputer {
 				+ ", companyId=" + companyId + ", companyName=" + companyName
 				+ "]";
 	}
-	
+
 	public DtoComputer() {
 		// TODO Auto-generated constructor stub
 	}

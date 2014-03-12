@@ -56,9 +56,8 @@ public class DashboardController {
 					page = 1;
 				}
 
-				computers = serviceComputer
-						.findAllByCreteria(null, computerOrder,
-						(page - 1) * 10, 10);
+				computers = serviceComputer.findAllByCreteria(null,
+						computerOrder, (page - 1) * 10, 10);
 			} else {
 				numberOfResult = serviceComputer.count(search);
 				numberOfPage = (numberOfResult / 10) + 1;
@@ -67,11 +66,10 @@ public class DashboardController {
 					page = 1;
 				}
 
-				computers = serviceComputer
-						.findAllByCreteria(search, computerOrder,
-								(page - 1) * 10, 10);
+				computers = serviceComputer.findAllByCreteria(search,
+						computerOrder, (page - 1) * 10, 10);
 			}
-			for (Computer c : computers){
+			for (Computer c : computers) {
 				computersDto.add(DAOComputer.createDTO(c));
 			}
 			model.addAttribute("computers", computersDto);
@@ -86,19 +84,10 @@ public class DashboardController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	private void doPost(ModelMap model, @RequestParam long id)
-			throws ServletException, IOException, NamingException {
-		List<String> message = new ArrayList<>();
+	private String doPost(ModelMap model) throws ServletException, IOException,
+			NamingException {
 
-		try {
-			serviceComputer.deleteComputer(id);
-			message.add("Computer deleted");
-		} catch (SQLException e) {
-			logger.error("Error when deleting computer", e);
-			message.add("Error when deleting computer");
-		}
-		model.addAttribute("message", message);
-		doGet(model, 0, null, null);
+		return "dashboard";
 	}
 
 	public ComputerOrder getOrder(String value, ModelMap model) {
@@ -143,5 +132,16 @@ public class DashboardController {
 
 	public void setComputerService(ServiceComputer computerService) {
 		this.serviceComputer = computerService;
+	}
+
+	// Test de la page d'erreur personnalisée
+	@RequestMapping(value = "/test")
+	public void test() throws IOException {
+
+		// On envoie une exception au ExceptionHandler
+		if (true) {
+			throw new IOException("this is io exception");
+		}
+
 	}
 }

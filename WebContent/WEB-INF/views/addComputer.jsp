@@ -6,12 +6,12 @@
 <jsp:include page="include/header.jsp" />
 
 <section id="main">
-	<c:out value="${ajout}" default="" />
+	<spring:message code="${ajout}" text=""/>
 	<h1>
 		<spring:message code="${formState=='Add' ? 'label.cAddTitle' : 'label.cUpdateTitle'}"/>
 	</h1>
 	<form:form
-		action="./addComputer${!empty computer ? '?update='.concat(computer.id) : ''}"
+		action="${action}"
 		method="POST" commandName="cDTO">
 		<form:hidden path="id" />
 		<fieldset>
@@ -20,7 +20,7 @@
 				<div class="input">
 					<form:input path="name" />
 					<span class="help-inline"><spring:message code="label.cRequired"/></span>
-					<form:errors path="name" />
+					<form:errors path="name" cssClass="errorMessage"/>
 				</div>
 			</div>
 			<div class="clearfix">
@@ -28,6 +28,7 @@
 				<div class="input">
 					<form:input type="date" pattern="yyyy-MM-dd" path="introduced" />
 					<span class="help-inline">YYYY-MM-DD</span>
+					<form:errors path="introduced" />
 				</div>
 			</div>
 			<div class="clearfix">
@@ -35,6 +36,7 @@
 				<div class="input">
 					<form:input type="date" pattern="yyyy-MM-dd" path="discontinued" />
 					<span class="help-inline">YYYY-MM-DD</span>
+					<form:errors path="discontinued" />
 				</div>
 			</div>
 			<div class="clearfix">
@@ -44,7 +46,7 @@
 						<form:option value="0">--</form:option>
 						<form:options items="${companies}" itemValue="id" itemLabel="name" />
 					</form:select>
-					<form:errors path="companyId"/>
+					<form:errors path="companyId" cssClass="errorMessage"/>
 				</div>
 			</div>
 		</fieldset>
