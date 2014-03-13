@@ -27,5 +27,22 @@ public class ComputerValidator implements Validator {
 		if (obj.getCompanyId() <= 0) {
 			e.rejectValue("companyId", "label.invCompany", "Invalid company");
 		}
+
+		if (obj.getIntroduced() != null) {
+			if (obj.getIntroduced().getYear() < 1000
+					|| obj.getIntroduced().getMonthOfYear() < 0
+					|| obj.getIntroduced().getDayOfMonth() < 0) {
+				e.rejectValue("introduced", "label.badDate", "Invalid Date");
+			}
+		}
+
+		if (obj.getDiscontinued() != null) {
+			if (obj.getDiscontinued().getYear() < 1000
+					|| obj.getDiscontinued().getMonthOfYear() < 0
+					|| obj.getDiscontinued().getDayOfMonth() < 0) {
+				e.rejectValue("discontinued", "label.badDate", "Invalid Date");
+			}
+		}
+
 	}
 }

@@ -1,7 +1,7 @@
 package com.excilys.computerdb.dao;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -28,21 +28,26 @@ public class DAOComputer extends JdbcDaoSupport {
 
 	public void saveComputer(DtoComputer computer) throws SQLException {
 		String query = "INSERT INTO computer (id, name, introduced, discontinued, company_id)  VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, introduced = ?, discontinued = ?, company_id = ?";
+		Date introduced = null;
+		Date discontinued = null;
+		if (computer.getIntroduced() != null) {
+			introduced = computer.getIntroduced().toDate();
+			// if (introduced.getTime() < 0) {
+			// introduced = null;
+			// }
+		}
+		if (computer.getDiscontinued() != null) {
+			discontinued = computer.getDiscontinued().toDate();
+			// if (discontinued.getTime() < 0) {
+			// discontinued = null;
+			// }
+		}
 		getJdbcTemplate().update(
 				query,
-				new Object[] {
-						computer.getId(),
-						computer.getName(),
-						new Timestamp(computer.getIntroduced().toDate()
-								.getTime()),
-						new Timestamp(computer.getDiscontinued().toDate()
-								.getTime()),
-						computer.getCompanyId(),
-						computer.getName(),
-						new Timestamp(computer.getIntroduced().toDate()
-								.getTime()),
-						new Timestamp(computer.getDiscontinued().toDate()
-								.getTime()), computer.getCompanyId() });
+				new Object[] { computer.getId(), computer.getName(),
+						introduced, discontinued, computer.getCompanyId(),
+						computer.getName(), introduced, discontinued,
+						computer.getCompanyId() });
 
 	}
 
