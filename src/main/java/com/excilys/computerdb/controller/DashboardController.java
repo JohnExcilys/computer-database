@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.naming.NamingException;
-import javax.servlet.ServletException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,8 +83,7 @@ public class DashboardController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	private String doPost(ModelMap model) throws ServletException, IOException,
-			NamingException {
+	private String doPost(ModelMap model) throws IOException, NamingException {
 
 		return "dashboard";
 	}

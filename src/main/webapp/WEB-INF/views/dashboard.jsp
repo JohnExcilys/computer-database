@@ -6,7 +6,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <section id="main">
-	<h1 id="homeTitle">${fn:length(computers)}
+	<h1 id="homeTitle">${number_of_result}
 		<spring:message code="label.computerFound" />
 	</h1>
 	<div id="actions">

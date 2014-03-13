@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
-import javax.servlet.ServletException;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -76,8 +75,8 @@ public class ComputerController {
 	protected String doGet(ModelMap model,
 			@RequestParam(required = false) BindingResult result,
 			@RequestParam(required = false) Long update,
-			@RequestParam(required = false) Long delete)
-			throws ServletException, IOException, NamingException {
+			@RequestParam(required = false) Long delete) throws IOException,
+			NamingException {
 
 		DtoComputer cDTO = new DtoComputer();
 		model.addAttribute("cDTO", cDTO);
@@ -132,8 +131,8 @@ public class ComputerController {
 	protected String doPost(ModelMap model,
 			@RequestParam(required = false) Long update,
 			@ModelAttribute("cDTO") @Valid DtoComputer cDTO,
-			BindingResult result) throws ServletException, IOException,
-			NamingException, SQLException {
+			BindingResult result) throws IOException, NamingException,
+			SQLException {
 		if (!result.hasErrors()) {
 			if (update == null) {
 				try {

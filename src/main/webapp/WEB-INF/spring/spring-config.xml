@@ -9,9 +9,6 @@
 						http://www.springframework.org/schema/context 
   						http://www.springframework.org/schema/context/spring-context-4.0.xsd ">
 
-
-	<context:component-scan base-package="com.excilys.computerdb" />
-
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -29,6 +26,8 @@
 	<bean id="daoComputer" class="com.excilys.computerdb.dao.DAOComputer">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+
+	<context:component-scan base-package="com.excilys.computerdb" />
 
 	<!-- Locale source bean -->
 	<bean id="messageSource"
