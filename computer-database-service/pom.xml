@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>computer-database</groupId>
+		<artifactId>computer-database</artifactId>
+		<version>2.2.0-RELEASE</version>
+	</parent>
+	<groupId>computer-database-service</groupId>
+	<artifactId>computer-database-service</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>computer-database-binding</groupId>
+			<artifactId>computer-database-binding</artifactId>
+			<version>2.2.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>computer-database-core</groupId>
+			<artifactId>computer-database-core</artifactId>
+			<version>2.2.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>computer-database-persistence</groupId>
+			<artifactId>computer-database-persistence</artifactId>
+			<version>2.2.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>4.0.2.RELEASE</version>
+		</dependency>
+	</dependencies>
+</project>
