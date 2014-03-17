@@ -1,10 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>computer-database</groupId>
 	<artifactId>computer-database</artifactId>
 	<version>2.2.0-RELEASE</version>
 	<packaging>pom</packaging>
+	<modules>
+		<module>computer-database-webapp</module>
+		<module>computer-database-binding</module>
+		<module>computer-database-core</module>
+		<module>computer-database-persistence</module>
+		<module>computer-database-service</module>
+	</modules>
+	<properties>
+		<!-- joda time -->
+		<joda-time.version>2.3</joda-time.version>
+
+		<!-- springframework -->
+		<springframework.version>4.0.2.RELEASE</springframework.version>
+
+		<!-- Log -->
+		<log4j.version>1.2.17</log4j.version>
+		<slf4j-log4j12.version>1.7.6</slf4j-log4j12.version>
+		<slf4j-api.version>1.7.6</slf4j-api.version>
+
+		<!-- Modules -->
+		<computer-database-core.version>2.2.0-RELEASE</computer-database-core.version>
+		<computer-database-binding.version>2.2.0-RELEASE</computer-database-binding.version>
+		<computer-database-persistence.version>2.2.0-RELEASE</computer-database-persistence.version>
+		<computer-database-service.version>2.2.0-RELEASE</computer-database-service.version>
+
+		<!-- JUnit -->
+		<junit.version>3.8.1</junit.version>
+
+		<!-- JSTL et Taglibs -->
+		<jstl.version>1.2</jstl.version>
+		<taglib.version>1.1.2</taglib.version>
+		
+		<!-- Validation -->
+		<validation-api.version>1.1.0.Final</validation-api.version>
+		
+		<!-- MySQL connector -->
+		<mysql-connector.version>5.1.29</mysql-connector.version>
+		
+	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${joda-time.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>computer-database-binding</groupId>
+				<artifactId>computer-database-binding</artifactId>
+				<version>${computer-database-binding.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>computer-database-core</groupId>
+				<artifactId>computer-database-core</artifactId>
+				<version>${computer-database-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>computer-database-persistence</groupId>
+				<artifactId>computer-database-persistence</artifactId>
+				<version>${computer-database-persistence.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>computer-database-service</groupId>
+				<artifactId>computer-database-service</artifactId>
+				<version>${computer-database-service.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>jstl</groupId>
+				<artifactId>jstl</artifactId>
+				<version>${jstl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>taglibs</groupId>
+				<artifactId>standard</artifactId>
+				<version>${taglib.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j-log4j12.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${validation-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<plugins>
 			<plugin>
@@ -17,11 +152,5 @@
 			</plugin>
 		</plugins>
 	</build>
-  <modules>
-    <module>computer-database-webapp</module>
-    <module>computer-database-binding</module>
-    <module>computer-database-core</module>
-    <module>computer-database-persistence</module>
-    <module>computer-database-service</module>
-  </modules>
+
 </project>
