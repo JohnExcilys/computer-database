@@ -32,15 +32,9 @@ public class DAOComputer extends JdbcDaoSupport {
 		Date discontinued = null;
 		if (computer.getIntroduced() != null) {
 			introduced = computer.getIntroduced().toDate();
-			// if (introduced.getTime() < 0) {
-			// introduced = null;
-			// }
 		}
 		if (computer.getDiscontinued() != null) {
 			discontinued = computer.getDiscontinued().toDate();
-			// if (discontinued.getTime() < 0) {
-			// discontinued = null;
-			// }
 		}
 		getJdbcTemplate().update(
 				query,
