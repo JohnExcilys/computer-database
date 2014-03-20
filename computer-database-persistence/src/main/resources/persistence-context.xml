@@ -17,21 +17,17 @@
 		<property name="username" value="root" />
 		<property name="password" value="admin" />
 	</bean>
-	
+
 	<bean id="txManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<bean id="daoCompany" class="com.excilys.computerdb.dao.DAOCompany">
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<bean id="daoComputer" class="com.excilys.computerdb.dao.DAOComputer">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+	<context:component-scan base-package="com.excilys.computerdb.dao" />
 
-	<context:component-scan base-package="com.excilys.computerdb.dao" />	
-
-	<tx:annotation-driven transaction-manager="txManager" />	
+	<tx:annotation-driven transaction-manager="txManager" />
 </beans>

@@ -4,7 +4,7 @@
 </head>
 <body>
 
-	<h1>Oops! Something went wrong</h1>
+	<h1>Et voilà, ça à fait BOOM !</h1>
 
 	<b>${name}</b>: ${message}
 	<br>

@@ -29,6 +29,7 @@ import com.excilys.computerdb.binding.DtoCompany;
 import com.excilys.computerdb.binding.DtoComputer;
 import com.excilys.computerdb.controller.validator.ComputerValidator;
 import com.excilys.computerdb.model.Company;
+import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.service.ServiceCompany;
 import com.excilys.computerdb.service.ServiceComputer;
 
@@ -74,13 +75,14 @@ public class ComputerController implements MessageSourceAware {
 
 		if (update != null) {
 			StringBuilder sb = new StringBuilder();
-			cDTO = DtoComputer.createDTO(serviceComputer.getComputer(update));
+			Computer c = serviceComputer.getComputer(update);
+			cDTO = DtoComputer.createDTO(c);
 			List<Company> companies = new ArrayList<Company>();
 			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
 
 			companies = serviceCompany.getCompanies();
-			for (Company c : companies) {
-				companiesDto.add(DtoCompany.createDTO(c));
+			for (Company cp : companies) {
+				companiesDto.add(DtoCompany.createDTO(cp));
 			}
 			model.addAttribute("companies", companiesDto);
 			model.addAttribute("cDTO", cDTO);
