@@ -4,7 +4,6 @@ public class Company {
 	private Long id;
 	private String name;
 
-	// Getter et Setter
 	public Long getid() {
 		return id;
 	}
@@ -21,7 +20,6 @@ public class Company {
 		this.name = name;
 	}
 
-	// Methodes
 	public Company() {
 		this.id = (long) 0;
 		this.name = "";
@@ -34,6 +32,8 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", name=" + name + "]";
+		StringBuilder sb = new StringBuilder();
+		return sb.append("Company [id=").append(id).append(", name=")
+				.append(name).append("]").toString();
 	}
 }

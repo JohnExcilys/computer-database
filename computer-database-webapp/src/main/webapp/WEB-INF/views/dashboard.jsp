@@ -17,7 +17,7 @@
 			<input type="submit" id="searchsubmit"
 				value="<spring:message code="label.filter"/>" class="btn primary">
 		</form>
-		<a class="btn success" id="add" href="addComputer"><spring:message code="label.add"/></a>
+		<a class="btn success" id="add" href="./computer/add"><spring:message code="label.add"/></a>
 	</div>
 
 	<table class="computers zebra-striped">
@@ -45,12 +45,12 @@
 		<tbody>
 			<c:forEach var="computer" items="${computers}">
 				<tr>
-					<td><a href="addComputer?update=${computer.id}">${computer.name}</a></td>
+					<td><a href="computer/update?update=${computer.id}">${computer.name}</a></td>
 					<td>${computer.introduced}</td>
 					<td>${computer.discontinued}</td>
 					<td>${computer.companyName}</td>
 					<td><a class="btn danger"
-						href="./addComputer?delete=${computer.id}"><spring:message
+						href="./computer/delete?delete=${computer.id}"><spring:message
 								code="label.delete" /></a></td>
 				</tr>
 			</c:forEach>

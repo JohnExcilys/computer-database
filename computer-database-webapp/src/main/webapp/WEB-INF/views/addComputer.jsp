@@ -27,18 +27,20 @@
 				<label for="introduced"><spring:message
 						code="label.cIntroduced" /></label>
 				<div class="input">
-					<form:input type="date" pattern="yyyy-MM-dd" path="introduced" />
-					<span class="help-inline">YYYY-MM-DD</span>
-					<form:errors path="introduced" />
+					<form:input type="text" path="introduced" />
+					<span class="help-inline"><spring:message
+						code="label.datePattern" /></span>
+					<form:errors path="introduced" cssClass="errorMessage"/>
 				</div>
 			</div>
 			<div class="clearfix">
 				<label for="discontinued"><spring:message
 						code="label.cDiscontinued" /></label>
 				<div class="input">
-					<form:input type="date" pattern="yyyy-MM-dd" path="discontinued" />
-					<span class="help-inline">YYYY-MM-DD</span>
-					<form:errors path="discontinued" />
+					<form:input type="text" path="discontinued" />
+					<span class="help-inline"><spring:message
+						code="label.datePattern" /></span>
+					<form:errors path="discontinued" cssClass="errorMessage"/>
 				</div>
 			</div>
 			<div class="clearfix">
@@ -55,7 +57,7 @@
 		<div class="actions">
 			<input type="submit"
 				value="<spring:message code="${formState=='Add' ? 'label.cAdd' : 'label.cUpdate'}"/>"
-				class="btn primary"> <a href="dashboard" class="btn"><spring:message
+				class="btn primary"> <a href="../dashboard" class="btn"><spring:message
 					code="label.cCancel" /></a>
 		</div>
 	</form:form>

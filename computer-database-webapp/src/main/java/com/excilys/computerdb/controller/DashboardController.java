@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.computerdb.dao.DAOComputer;
+import com.excilys.computerdb.binding.DtoComputer;
 import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.model.ComputerOrder;
-import com.excilys.computerdb.model.dto.DtoComputer;
+import com.excilys.computerdb.model.WrapperListCount;
 import com.excilys.computerdb.service.ServiceComputer;
 
 @Controller
@@ -32,18 +30,19 @@ public class DashboardController {
 	private ServiceComputer serviceComputer;
 
 	@RequestMapping(method = RequestMethod.GET)
-	private String doGet(ModelMap model,
+	private String setDashboard(ModelMap model,
 			@RequestParam(defaultValue = "1", required = false) int page,
 			@RequestParam(required = false) String order,
 			@RequestParam(required = false) String search) {
 
 		int numberOfPage = 1;
+		WrapperListCount wrapper = new WrapperListCount();
 
 		ComputerOrder computerOrder = getOrder(order, model);
 		Map<String, String> queryParameters = new HashMap<>();
-		List<Computer> computers = new ArrayList<Computer>();
 		List<DtoComputer> computersDto = new ArrayList<DtoComputer>();
 		if (computerOrder != null) {
+
 			queryParameters.put("order", computerOrder.getUrlParameter());
 		}
 		try {
@@ -55,7 +54,7 @@ public class DashboardController {
 					page = 1;
 				}
 
-				computers = serviceComputer.findAllByCreteria(null,
+				wrapper = serviceComputer.findAllByCreteria(null,
 						computerOrder, (page - 1) * 10, 10);
 			} else {
 				numberOfResult = serviceComputer.count(search);
@@ -65,26 +64,21 @@ public class DashboardController {
 					page = 1;
 				}
 
-				computers = serviceComputer.findAllByCreteria(search,
+				wrapper = serviceComputer.findAllByCreteria(search,
 						computerOrder, (page - 1) * 10, 10);
 			}
-			for (Computer c : computers) {
-				computersDto.add(DAOComputer.createDTO(c));
+			for (Object c : wrapper.getList()) {
+				computersDto.add(DtoComputer.createDTO((Computer) c));
 			}
-			model.addAttribute("computers", computersDto);
+			wrapper.setList(computersDto);
+			model.addAttribute("computers", wrapper.getList());
 			model.addAttribute("current_page", page);
 			model.addAttribute("last_page", numberOfPage);
-			model.addAttribute("number_of_result", numberOfResult);
+			model.addAttribute("number_of_result", wrapper.getCount());
 		} catch (SQLException e) {
 			logger.error("Erreur lors de l'accès à la liste", e);
 		}
 		model.addAttribute("query_parameters", queryParameters);
-		return "dashboard";
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	private String doPost(ModelMap model) throws IOException, NamingException {
-
 		return "dashboard";
 	}
 
@@ -124,21 +118,13 @@ public class DashboardController {
 		return order;
 	}
 
-	public ServiceComputer getComputerService() {
-		return serviceComputer;
-	}
-
-	public void setComputerService(ServiceComputer computerService) {
-		this.serviceComputer = computerService;
-	}
-
 	// Test de la page d'erreur personnalisée
 	@RequestMapping(value = "/test")
 	public void test() throws IOException {
 
 		// On envoie une exception au ExceptionHandler
 		if (true) {
-			throw new IOException("this is io exception");
+			throw new IOException("Exception I/O");
 		}
 
 	}

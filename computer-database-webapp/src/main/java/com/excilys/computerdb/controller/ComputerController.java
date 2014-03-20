@@ -1,6 +1,5 @@
 package com.excilys.computerdb.controller;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -12,6 +11,10 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -22,18 +25,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.excilys.computerdb.binding.DtoCompany;
+import com.excilys.computerdb.binding.DtoComputer;
 import com.excilys.computerdb.controller.validator.ComputerValidator;
-import com.excilys.computerdb.dao.DAOCompany;
-import com.excilys.computerdb.dao.DAOComputer;
 import com.excilys.computerdb.model.Company;
-import com.excilys.computerdb.model.dto.DtoCompany;
-import com.excilys.computerdb.model.dto.DtoComputer;
 import com.excilys.computerdb.service.ServiceCompany;
 import com.excilys.computerdb.service.ServiceComputer;
 
 @Controller
-@RequestMapping("/addComputer")
-public class ComputerController {
+@RequestMapping("/computer")
+public class ComputerController implements MessageSourceAware {
 	final Logger logger = LoggerFactory.getLogger(ComputerController.class);
 
 	@Autowired
@@ -43,154 +44,147 @@ public class ComputerController {
 
 	@Autowired
 	private ComputerValidator computerValidator;
-
-	public ServiceCompany getServiceCompany() {
-		return serviceCompany;
-	}
-
-	public void setServiceCompany(ServiceCompany serviceCompany) {
-		this.serviceCompany = serviceCompany;
-	}
-
-	public ServiceComputer getServiceComputer() {
-		return serviceComputer;
-	}
-
-	public void setServiceComputer(ServiceComputer serviceComputer) {
-		this.serviceComputer = serviceComputer;
-	}
-
-	public ComputerValidator getComputerValidator() {
-		return computerValidator;
-	}
-
-	public void setComputerValidator(ComputerValidator computerValidator) {
-		this.computerValidator = computerValidator;
-	}
+	private MessageSource message;
 
 	public ComputerController() {
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
-	protected String doGet(ModelMap model,
-			@RequestParam(required = false) BindingResult result,
-			@RequestParam(required = false) Long update,
-			@RequestParam(required = false) Long delete) throws IOException,
-			NamingException {
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	protected String deleteComputer(ModelMap model,
+			@RequestParam(required = false) Long delete)
+			throws NamingException, SQLException {
 
 		DtoComputer cDTO = new DtoComputer();
 		model.addAttribute("cDTO", cDTO);
 
-		// Add
-		try {
+		if (delete != null) {
+			serviceComputer.deleteComputer(delete);
+			model.addAttribute("ajout", "label.computer.delete.success");
+		}
+		return "addComputer";
+	}
+
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	protected String updateComputerGet(ModelMap model,
+			@RequestParam(required = false) Long update)
+			throws NamingException, SQLException {
+
+		DtoComputer cDTO = new DtoComputer();
+		model.addAttribute("cDTO", cDTO);
+
+		if (update != null) {
+			StringBuilder sb = new StringBuilder();
+			cDTO = DtoComputer.createDTO(serviceComputer.getComputer(update));
 			List<Company> companies = new ArrayList<Company>();
 			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
 
 			companies = serviceCompany.getCompanies();
 			for (Company c : companies) {
-				companiesDto.add(DAOCompany.createDTO(c));
+				companiesDto.add(DtoCompany.createDTO(c));
 			}
 			model.addAttribute("companies", companiesDto);
-			model.addAttribute("action", "./addComputer");
-		} catch (NamingException | SQLException e) {
-			e.printStackTrace();
-		}
-		model.addAttribute("formState", "Add");
-
-		// Update
-		if (update != null) {
-
-			try {
-				cDTO = DAOComputer.createDTO(serviceComputer
-						.getComputer(update));
-				model.addAttribute("cDTO", cDTO);
-				model.addAttribute("formState", "Update");
-				model.addAttribute("action",
-						"./addComputer?update=" + cDTO.getId());
-			} catch (NumberFormatException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		// Delete
-		if (delete != null) {
-			try {
-				serviceComputer.deleteComputer(delete);
-				model.addAttribute("ajout", "label.computer.delete.success");
-			} catch (NumberFormatException | NamingException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			model.addAttribute("cDTO", cDTO);
+			model.addAttribute("formState", "Update");
+			model.addAttribute("action",
+					sb.append("./update?update=").append(cDTO.getId())
+							.toString());
 		}
 
 		return "addComputer";
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	protected String doPost(ModelMap model,
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	protected String updateComputerPost(ModelMap model,
 			@RequestParam(required = false) Long update,
 			@ModelAttribute("cDTO") @Valid DtoComputer cDTO,
-			BindingResult result) throws IOException, NamingException,
-			SQLException {
+			BindingResult result) throws NoSuchMessageException, SQLException,
+			ParseException, NamingException {
+
 		if (!result.hasErrors()) {
-			if (update == null) {
-				try {
-					// Add
-					System.out.println("Add controller");
-					serviceComputer.saveComputer(cDTO);
 
-					List<Company> companies = new ArrayList<Company>();
-					List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
-					companies = serviceCompany.getCompanies();
-					for (Company c : companies) {
-						companiesDto.add(DAOCompany.createDTO(c));
-					}
-					model.addAttribute("companies", companiesDto);
-				} catch (NumberFormatException | SQLException | ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				// Update
-				try {
-					serviceComputer.saveComputer(cDTO);
-				} catch (NumberFormatException | SQLException | ParseException e) {
-					e.printStackTrace();
-				}
-			}
-			if (cDTO.getId() != null && cDTO.getId() != 0) {
-				model.addAttribute("formState", "Update");
-				model.addAttribute("ajout", "label.computer.update.success");
-				List<Company> companies = new ArrayList<Company>();
-				List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
+			serviceComputer.saveComputer(DtoComputer.createComputerFromDto(
+					cDTO, message.getMessage("label.datePatternUsed", null,
+							LocaleContextHolder.getLocale())));
 
-				companies = serviceCompany.getCompanies();
-				for (Company c : companies) {
-					companiesDto.add(DAOCompany.createDTO(c));
-				}
-				model.addAttribute("companies", companiesDto);
-			} else {
-				model.addAttribute("formState", "Add");
-				model.addAttribute("ajout", "label.computer.add.success");
+			model.addAttribute("formState", "Update");
+			model.addAttribute("ajout", "label.computer.update.success");
+			List<Company> companies = new ArrayList<Company>();
+			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
+
+			companies = serviceCompany.getCompanies();
+			for (Company c : companies) {
+				companiesDto.add(DtoCompany.createDTO(c));
 			}
-			model.addAttribute("cDTO", cDTO);
+			model.addAttribute("companies", companiesDto);
 		} else {
-			// Affichage des erreurs via <form:errors/> dans la jsp
+			StringBuilder sb = new StringBuilder();
 			List<Company> companies = new ArrayList<Company>();
 			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
 			companies = serviceCompany.getCompanies();
 			for (Company c : companies) {
-				companiesDto.add(DAOCompany.createDTO(c));
+				companiesDto.add(DtoCompany.createDTO(c));
 			}
 			model.addAttribute("companies", companiesDto);
-			if (cDTO.getId() != null && cDTO.getId() != 0) {
-				model.addAttribute("formState", "Update");
-				model.addAttribute("action",
-						"./addComputer?update=" + cDTO.getId());
-			} else {
-				model.addAttribute("formState", "Add");
+			model.addAttribute("formState", "Update");
+			model.addAttribute("action",
+					sb.append("./update?update=").append(cDTO.getId())
+							.toString());
+		}
+
+		return "addComputer";
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	protected String addComputerGet(ModelMap model) throws SQLException,
+			NamingException {
+
+		DtoComputer cDTO = new DtoComputer();
+		model.addAttribute("cDTO", cDTO);
+
+		List<Company> companies = new ArrayList<Company>();
+		List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
+
+		companies = serviceCompany.getCompanies();
+		for (Company c : companies) {
+			companiesDto.add(DtoCompany.createDTO(c));
+		}
+		model.addAttribute("companies", companiesDto);
+		model.addAttribute("action", "./add");
+
+		model.addAttribute("formState", "Add");
+
+		return "addComputer";
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	protected String addComputerPost(ModelMap model,
+			@ModelAttribute("cDTO") @Valid DtoComputer cDTO,
+			BindingResult result) throws NoSuchMessageException, SQLException,
+			ParseException, NamingException {
+
+		if (!result.hasErrors()) {
+			serviceComputer.saveComputer(DtoComputer.createComputerFromDto(
+					cDTO, message.getMessage("label.datePatternUsed", null,
+							LocaleContextHolder.getLocale())));
+
+			List<Company> companies = new ArrayList<Company>();
+			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
+			companies = serviceCompany.getCompanies();
+			for (Company c : companies) {
+				companiesDto.add(DtoCompany.createDTO(c));
 			}
+			model.addAttribute("companies", companiesDto);
+			model.addAttribute("formState", "Add");
+			model.addAttribute("ajout", "label.computer.add.success");
+		} else {
+			List<Company> companies = new ArrayList<Company>();
+			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
+			companies = serviceCompany.getCompanies();
+			for (Company c : companies) {
+				companiesDto.add(DtoCompany.createDTO(c));
+			}
+			model.addAttribute("companies", companiesDto);
+			model.addAttribute("formState", "Add");
 		}
 
 		return "addComputer";
@@ -199,5 +193,11 @@ public class ComputerController {
 	@InitBinder
 	private void binder(WebDataBinder binder) {
 		binder.addValidators(computerValidator);
+	}
+
+	@Override
+	public void setMessageSource(MessageSource message) {
+		this.message = message;
+
 	}
 }

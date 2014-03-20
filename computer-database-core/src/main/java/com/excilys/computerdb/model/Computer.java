@@ -50,6 +50,7 @@ public class Computer {
 	}
 
 	public Computer() {
+		this.company = new Company();
 	}
 
 	public Computer(Long id, String name, LocalDate introduced,
@@ -63,9 +64,11 @@ public class Computer {
 
 	@Override
 	public String toString() {
-		return "Computer [id=" + id + ", name=" + name + ", introduced="
-				+ introduced + ", discontinued=" + discontinued + ", company="
-				+ company + "]";
+		StringBuilder sb = new StringBuilder();
+		return sb.append("Computer [id=").append(id).append(", name=")
+				.append(name).append(", introduced=").append(introduced)
+				.append(", discontinued=").append(discontinued)
+				.append(", company=").append(company).append("]").toString();
 	}
 
 }

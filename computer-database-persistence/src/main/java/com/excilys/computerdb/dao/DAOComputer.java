@@ -12,7 +12,6 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import com.excilys.computerdb.dao.mapper.ComputerMapper;
 import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.model.ComputerOrder;
-import com.excilys.computerdb.model.dto.DtoComputer;
 
 public class DAOComputer extends JdbcDaoSupport {
 	Logger log = Logger.getLogger(DAOComputer.class.getName());
@@ -26,7 +25,7 @@ public class DAOComputer extends JdbcDaoSupport {
 		}
 	}
 
-	public void saveComputer(DtoComputer computer) throws SQLException {
+	public void saveComputer(Computer computer) throws SQLException {
 		String query = "INSERT INTO computer (id, name, introduced, discontinued, company_id)  VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, introduced = ?, discontinued = ?, company_id = ?";
 		Date introduced = null;
 		Date discontinued = null;
@@ -36,12 +35,13 @@ public class DAOComputer extends JdbcDaoSupport {
 		if (computer.getDiscontinued() != null) {
 			discontinued = computer.getDiscontinued().toDate();
 		}
-		getJdbcTemplate().update(
-				query,
-				new Object[] { computer.getId(), computer.getName(),
-						introduced, discontinued, computer.getCompanyId(),
-						computer.getName(), introduced, discontinued,
-						computer.getCompanyId() });
+		getJdbcTemplate()
+				.update(query,
+						new Object[] { computer.getId(), computer.getName(),
+								introduced, discontinued,
+								computer.getCompany().getid(),
+								computer.getName(), introduced, discontinued,
+								computer.getCompany().getid() });
 
 	}
 
@@ -61,66 +61,41 @@ public class DAOComputer extends JdbcDaoSupport {
 
 	public List<Computer> findAllByCreteria(String search, ComputerOrder order,
 			int startAt, int numberOfRows) throws SQLException {
-
-		String sql = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name "
-				+ "FROM computer LEFT JOIN company ON computer.company_id = company.id";
+		StringBuilder sql = new StringBuilder();
+		StringBuilder sbSearch = new StringBuilder();
+		sql.append("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id");
 		if (search != null) {
-			sql += " WHERE computer.name LIKE ? OR company.name LIKE ?";
+			sql.append(" WHERE computer.name LIKE ? OR company.name LIKE ?");
 		}
 		if (order != null) {
-			sql += " ORDER BY " + order.getOrderStatement();
+			sql.append(" ORDER BY ").append(order.getOrderStatement());
 		}
-		sql += " LIMIT ?, ?";
+		sql.append(" LIMIT ?, ?");
 
 		if (search != null) {
+			sbSearch.append("%").append(search).append("%");
 			return getJdbcTemplate().query(
-					sql,
-					new Object[] { "%" + search + "%", "%" + search + "%",
+					sql.toString(),
+					new Object[] { sbSearch.toString(), sbSearch.toString(),
 							startAt, numberOfRows, }, new ComputerMapper());
 		}
-		return getJdbcTemplate().query(sql,
+		return getJdbcTemplate().query(sql.toString(),
 				new Object[] { startAt, numberOfRows }, new ComputerMapper());
 	}
 
 	public int count(String search) throws SQLException {
-		String sql = "SELECT COUNT(id) FROM computer";
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT COUNT(id) FROM computer");
 		if (search == null) {
-			return getJdbcTemplate().queryForObject(sql, Integer.class);
+			return getJdbcTemplate().queryForObject(sql.toString(),
+					Integer.class);
 		} else {
-			sql += " WHERE name LIKE ?";
-			return getJdbcTemplate().queryForObject(sql, Integer.class,
-					"%" + search + "%");
+			sql.append(" WHERE name LIKE ?");
+			return getJdbcTemplate().queryForObject(sql.toString(),
+					Integer.class, "%" + search + "%");
 		}
 	}
 
 	public DAOComputer() {
-	}
-
-	public static DtoComputer createDTO(Computer c) {
-		DtoComputer cDto = null;
-		if (c != null) {
-			cDto = new DtoComputer();
-			cDto.setId(c.getId());
-			cDto.setName(c.getName());
-			cDto.setIntroduced(c.getIntroduced());
-			cDto.setDiscontinued(c.getDiscontinued());
-			cDto.setCompanyId(c.getCompany().getid());
-			cDto.setCompanyName(c.getCompany().getname());
-		}
-		return cDto;
-	}
-
-	public static Computer createComputerFromDto(DtoComputer dtoC) {
-		Computer c = null;
-		if (dtoC != null) {
-			c = new Computer();
-			c.setId(dtoC.getId());
-			c.setName(dtoC.getName());
-			c.setIntroduced(dtoC.getIntroduced());
-			c.setDiscontinued(dtoC.getDiscontinued());
-			c.getCompany().setid(dtoC.getCompanyId());
-			c.getCompany().setname(dtoC.getName());
-		}
-		return c;
 	}
 }

@@ -10,14 +10,6 @@
 	<artifactId>computer-database-service</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>computer-database-binding</groupId>
-			<artifactId>computer-database-binding</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>computer-database-core</groupId>
-			<artifactId>computer-database-core</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>computer-database-persistence</groupId>
 			<artifactId>computer-database-persistence</artifactId>
 		</dependency>
