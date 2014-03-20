@@ -45,6 +45,11 @@
 		<!-- MySQL connector -->
 		<mysql-connector.version>5.1.29</mysql-connector.version>
 
+		<!-- Hibernate -->
+		<hibernate.version>4.3.4.Final</hibernate.version>
+		
+		<!-- Javassist -->
+		<javassist.version>3.12.1.GA</javassist.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -143,6 +148,16 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
 				<version>${hibernate-validator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>${javassist.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
