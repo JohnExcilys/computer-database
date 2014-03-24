@@ -7,19 +7,16 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.computerdb.model.Company;
 import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.model.ComputerOrder;
+import com.excilys.computerdb.model.QCompany;
+import com.excilys.computerdb.model.QComputer;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 public class DAOComputer {
@@ -31,14 +28,9 @@ public class DAOComputer {
 
 	public List<Computer> getComputers() throws SQLException {
 		{
-			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-			CriteriaQuery<Computer> criteriaQuery = builder
-					.createQuery(Computer.class);
-			Root<Computer> computerRoot = criteriaQuery.from(Computer.class);
-			criteriaQuery.select(computerRoot);
-			List<Computer> computerList = entityManager.createQuery(
-					criteriaQuery).getResultList();
-			return computerList;
+			QComputer computer = QComputer.computer;
+			JPAQuery query = new JPAQuery(entityManager);
+			return query.from(computer).list(computer);
 		}
 	}
 
@@ -56,57 +48,49 @@ public class DAOComputer {
 
 	public List<Computer> findAllByCreteria(String search, ComputerOrder order,
 			int startAt, int numberOfRows) throws SQLException {
+		QComputer computer = QComputer.computer;
+		QCompany company = QCompany.company;
+		JPAQuery query = new JPAQuery(entityManager);
+		query.from(computer);
+		query.leftJoin(computer.company, company);
 
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Computer> criteriaQuery = builder
-				.createQuery(Computer.class);
-		Root<Computer> computerRoot = criteriaQuery.from(Computer.class);
-		Join<Computer, Company> companyJoin = computerRoot.join("company",
-				JoinType.LEFT);
-
-		criteriaQuery.select(computerRoot);
 		if (search != null) {
-			criteriaQuery.where(builder.or(builder.like(computerRoot
-					.get("name").as(String.class), search), builder.like(
-					companyJoin.get("name").as(String.class), search)));
+			query.where(computer.name.like(search)
+					.or(company.name.like(search)));
 		}
 
 		if (order != null) {
 			switch (order) {
 			case ORDER_BY_NAME_ASC:
-				criteriaQuery.orderBy(builder.asc(computerRoot.get("name")));
+				query.orderBy(computer.name.asc());
 				break;
 
 			case ORDER_BY_NAME_DESC:
-				criteriaQuery.orderBy(builder.desc(computerRoot.get("name")));
+				query.orderBy(computer.name.desc());
 				break;
 
 			case ORDER_BY_COMPANY_NAME_ASC:
-				criteriaQuery.orderBy(builder.asc(companyJoin.get("name")));
+				query.orderBy(company.name.asc());
 				break;
 
 			case ORDER_BY_COMPANY_NAME_DESC:
-				criteriaQuery.orderBy(builder.desc(companyJoin.get("name")));
+				query.orderBy(company.name.desc());
 				break;
 
 			case ORDER_BY_INTRODUCED_DATE_ASC:
-				criteriaQuery.orderBy(builder.asc(computerRoot
-						.get("introduced")));
+				query.orderBy(computer.introduced.asc());
 				break;
 
 			case ORDER_BY_INTRODUCED_DATE_DESC:
-				criteriaQuery.orderBy(builder.desc(computerRoot
-						.get("introduced")));
+				query.orderBy(computer.introduced.desc());
 				break;
 
 			case ORDER_BY_DISCONTINUED_DATE_ASC:
-				criteriaQuery.orderBy(builder.asc(computerRoot
-						.get("discontinued")));
+				query.orderBy(computer.discontinued.asc());
 				break;
 
 			case ORDER_BY_DISCONTINUED_DATE_DESC:
-				criteriaQuery.orderBy(builder.desc(computerRoot
-						.get("discontinued")));
+				query.orderBy(computer.discontinued.desc());
 				break;
 
 			default:
@@ -114,10 +98,7 @@ public class DAOComputer {
 			}
 		}
 
-		List<Computer> computerList = entityManager.createQuery(criteriaQuery)
-				.setFirstResult(startAt).setMaxResults(numberOfRows)
-				.getResultList();
-		return computerList;
+		return query.limit(numberOfRows).offset(startAt).list(computer);
 	}
 
 	public int count(String search) throws SQLException {
