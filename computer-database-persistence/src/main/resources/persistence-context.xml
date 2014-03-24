@@ -50,28 +50,4 @@
 	</bean>
 	
 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
-
-	<!-- Avant hibernate -->
-	<!-- <tx:annotation-driven transaction-manager="txManager" /> -->
-
-	<!-- <bean id="dataSource" -->
-	<!-- class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
-	<!-- <property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
-	<!-- <property name="url" -->
-	<!-- value="jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull" 
-		/> -->
-	<!-- <property name="username" value="root" /> -->
-	<!-- <property name="password" value="admin" /> -->
-	<!-- </bean> -->
-
-	<!-- <bean id="txManager" -->
-	<!-- class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> -->
-	<!-- <property name="dataSource" ref="dataSource" /> -->
-	<!-- </bean> -->
-
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-	<property name="dataSource" ref="dataSource" />
-	</bean>
-
-
 </beans>

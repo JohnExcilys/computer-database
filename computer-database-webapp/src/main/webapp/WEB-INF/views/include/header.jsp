@@ -14,7 +14,7 @@
 <body>
 	<header class="topbar">
 		<h1 class="fill">
-			<a href="dashboard"> <spring:message code="label.appTitle" />
+			<a href="/computer-database-webapp/dashboard"> <spring:message code="label.appTitle" />
 			</a>
 		</h1>
 		<span style="float: right"> <a href="?${!empty param.update ? 'update='.concat(param.update).concat('&') : ''}${!empty param.page ? 'page='.concat(param.page).concat('&') : ''}${!empty param.order ? 'order='.concat(param.order).concat('&') : ''}${!empty param.search ? 'search='.concat(param.search).concat('&') : ''}lang=en">English</a> | <a
