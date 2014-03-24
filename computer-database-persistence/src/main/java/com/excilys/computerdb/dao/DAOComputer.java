@@ -31,11 +31,6 @@ public class DAOComputer {
 
 	public List<Computer> getComputers() throws SQLException {
 		{
-			// Sans Criteria
-			// String query = "FROM Computer";
-			// return entityManager.createQuery(query).getResultList();
-
-			// Avec Criteria
 			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Computer> criteriaQuery = builder
 					.createQuery(Computer.class);
@@ -59,32 +54,9 @@ public class DAOComputer {
 		entityManager.remove(getComputer(id));
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Computer> findAllByCreteria(String search, ComputerOrder order,
 			int startAt, int numberOfRows) throws SQLException {
 
-		// Sans Criteria
-		// StringBuilder sql = new StringBuilder();
-		// sql.append("SELECT computer FROM Computer AS computer LEFT JOIN computer.company company");
-		// if (search != null) {
-		// sql.append(" WHERE computer.name LIKE :search OR company.name LIKE :search");
-		// }
-		// if (order != null) {
-		// sql.append(" ORDER BY ").append(order.getOrderStatement());
-		// }
-		//
-		// Query query = entityManager.createQuery(sql.toString());
-		// if (search != null) {
-		// query.setParameter("search", new StringBuilder("%").append(search)
-		// .append("%").toString());
-		// }
-		//
-		// query.setFirstResult(startAt);
-		// query.setMaxResults(numberOfRows);
-		//
-		// return query.getResultList();
-
-		// Avec Criteria
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Computer> criteriaQuery = builder
 				.createQuery(Computer.class);
