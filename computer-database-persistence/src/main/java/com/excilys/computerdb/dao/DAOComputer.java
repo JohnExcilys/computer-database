@@ -1,103 +1,91 @@
 package com.excilys.computerdb.dao;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.computerdb.dao.mapper.ComputerMapper;
 import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.model.ComputerOrder;
 
 @Repository
 public class DAOComputer {
-	Logger log = Logger.getLogger(DAOComputer.class.getName());
 	@Autowired
 	JdbcTemplate getJdbcTemplate;
 
+	@Autowired
+	DataSource dataSource;
+
+	@PersistenceContext(unitName = "entityManagerFactory")
+	private EntityManager entityManager;
+
+	@SuppressWarnings("unchecked")
 	public List<Computer> getComputers() throws SQLException {
 		{
-
-			String query = "SELECT c.id, c.name, c.introduced, c.discontinued, c.company_id, cp.id AS cid, cp.name AS cname FROM computer AS c LEFT JOIN company AS cp ON c.company_id = cp.id";
-
-			return getJdbcTemplate.query(query, new ComputerMapper());
+			String query = "FROM Computer";
+			return entityManager.createQuery(query).getResultList();
 		}
 	}
 
 	public void saveComputer(Computer computer) throws SQLException {
-		String query = "INSERT INTO computer (id, name, introduced, discontinued, company_id)  VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, introduced = ?, discontinued = ?, company_id = ?";
-		Date introduced = null;
-		Date discontinued = null;
-		if (computer.getIntroduced() != null) {
-			introduced = computer.getIntroduced().toDate();
-		}
-		if (computer.getDiscontinued() != null) {
-			discontinued = computer.getDiscontinued().toDate();
-		}
-		getJdbcTemplate
-				.update(query,
-						new Object[] { computer.getId(), computer.getName(),
-								introduced, discontinued,
-								computer.getCompany().getid(),
-								computer.getName(), introduced, discontinued,
-								computer.getCompany().getid() });
-
+		entityManager.merge(computer);
 	}
 
 	public Computer getComputer(Long id) throws SQLException {
-		String query = "SELECT c.id, c.name, c.introduced, c.discontinued, cp.id AS cid, cp.name AS cname FROM computer AS c LEFT JOIN company AS cp ON c.company_id=cp.id where c.id = ?";
-		getJdbcTemplate.queryForObject(query, new Object[] { id },
-				new ComputerMapper());
-
-		return getJdbcTemplate.queryForObject(query, new Object[] { id },
-				new ComputerMapper());
+		return entityManager.find(Computer.class, id);
 	}
 
 	public void deleteComputer(Long id) throws NamingException, SQLException {
-		String query = "DELETE FROM computer where id = ?";
-		getJdbcTemplate.update(query, new Object[] { id });
+		Computer c = entityManager.find(Computer.class, id);
+		entityManager.remove(c);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Computer> findAllByCreteria(String search, ComputerOrder order,
 			int startAt, int numberOfRows) throws SQLException {
 		StringBuilder sql = new StringBuilder();
-		StringBuilder sbSearch = new StringBuilder();
-		sql.append("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id");
+		sql.append("SELECT computer FROM Computer AS computer LEFT JOIN computer.company company");
 		if (search != null) {
-			sql.append(" WHERE computer.name LIKE ? OR company.name LIKE ?");
+			sql.append(" WHERE computer.name LIKE :search OR company.name LIKE :search");
 		}
 		if (order != null) {
 			sql.append(" ORDER BY ").append(order.getOrderStatement());
 		}
-		sql.append(" LIMIT ?, ?");
 
+		Query query = entityManager.createQuery(sql.toString());
 		if (search != null) {
-			sbSearch.append("%").append(search).append("%");
-			return getJdbcTemplate.query(sql.toString(), new Object[] {
-					sbSearch.toString(), sbSearch.toString(), startAt,
-					numberOfRows, }, new ComputerMapper());
+			query.setParameter("search", new StringBuilder("%").append(search)
+					.append("%").toString());
 		}
-		return getJdbcTemplate.query(sql.toString(), new Object[] { startAt,
-				numberOfRows }, new ComputerMapper());
+
+		query.setFirstResult(startAt);
+		query.setMaxResults(numberOfRows);
+
+		return query.getResultList();
 	}
 
 	public int count(String search) throws SQLException {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT COUNT(id) FROM computer");
-		if (search == null) {
-			return getJdbcTemplate
-					.queryForObject(sql.toString(), Integer.class);
-		} else {
-			sql.append(" WHERE name LIKE ?");
-			return getJdbcTemplate.queryForObject(sql.toString(),
-					Integer.class, "%" + search + "%");
+		sql.append("SELECT COUNT(id) FROM Computer AS computer LEFT JOIN computer.company company");
+		if (search != null) {
+			sql.append(" WHERE computer.name LIKE :search OR company.name LIKE :search");
 		}
+
+		Query query = entityManager.createQuery(sql.toString());
+		if (search != null) {
+			query.setParameter("search", new StringBuilder("%").append(search)
+					.append("%").toString());
+		}
+
+		return Integer.parseInt(query.getSingleResult().toString());
 	}
 
 	public DAOComputer() {

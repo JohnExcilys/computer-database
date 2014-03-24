@@ -4,25 +4,28 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.computerdb.dao.mapper.CompanyMapper;
 import com.excilys.computerdb.model.Company;
 
 @Repository
 public class DAOCompany {
-	static Logger log = Logger.getLogger(DAOCompany.class.getName());
+
 	@Autowired
-	JdbcTemplate getJdbcTemplate;
+	DataSource dataSource;
 
+	@PersistenceContext(unitName = "entityManagerFactory")
+	private EntityManager entityManager;
+
+	@SuppressWarnings("unchecked")
 	public List<Company> getCompanies() throws NamingException, SQLException {
-		String query = "SELECT id, name FROM company";
-
-		return getJdbcTemplate.query(query, new CompanyMapper());
+		String query = "FROM Company";
+		return entityManager.createQuery(query).getResultList();
 	}
 
 	public DAOCompany() {

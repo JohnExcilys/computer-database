@@ -89,8 +89,10 @@ public class DtoComputer {
 			} else {
 				cDto.setDiscontinued("");
 			}
-			cDto.setCompanyId(c.getCompany().getid());
-			cDto.setCompanyName(c.getCompany().getname());
+			if (c.getCompany() != null) {
+				cDto.setCompanyId(c.getCompany().getid());
+				cDto.setCompanyName(c.getCompany().getname());
+			}
 		}
 		return cDto;
 	}

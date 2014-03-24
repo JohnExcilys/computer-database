@@ -3,7 +3,6 @@ package com.excilys.computerdb.service;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.naming.NamingException;
 
@@ -19,15 +18,8 @@ import com.excilys.computerdb.model.WrapperListCount;
 @Service
 @Transactional
 public class ServiceComputer {
-	Logger log = Logger.getLogger(ServiceComputer.class.getName());
 	@Autowired
 	DAOComputer daoComputer;
-
-	public List<Computer> getComputers() throws SQLException {
-		List<Computer> computerList;
-		computerList = daoComputer.getComputers();
-		return computerList;
-	}
 
 	public boolean saveComputer(Computer c) throws SQLException, ParseException {
 		daoComputer.saveComputer(c);

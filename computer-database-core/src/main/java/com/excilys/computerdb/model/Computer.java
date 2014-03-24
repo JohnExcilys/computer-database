@@ -1,12 +1,38 @@
 package com.excilys.computerdb.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
+@Entity
+@Table(name = "computer")
 public class Computer {
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "name")
 	private String name;
+	@Column(name = "introduced")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	@Temporal(TemporalType.DATE)
 	private LocalDate introduced;
+	@Column(name = "discontinued")
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	@Temporal(TemporalType.DATE)
 	private LocalDate discontinued;
+	@ManyToOne
+	@JoinColumn(referencedColumnName = "id")
 	private Company company;
 
 	public Long getId() {
