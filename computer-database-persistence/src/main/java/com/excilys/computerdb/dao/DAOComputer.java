@@ -115,6 +115,7 @@ public class DAOComputer {
 		}
 
 		List<Computer> computerList = entityManager.createQuery(criteriaQuery)
+				.setFirstResult(startAt).setMaxResults(numberOfRows)
 				.getResultList();
 		return computerList;
 	}

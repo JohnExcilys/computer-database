@@ -51,9 +51,12 @@
 
 		<!-- Javassist -->
 		<javassist.version>3.12.1.GA</javassist.version>
-		
+
 		<!-- Jadira -->
 		<jadira.version>3.1.0.GA</jadira.version>
+
+		<!-- Query DSL -->
+		<querydsl.version>3.3.2</querydsl.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -173,6 +176,17 @@
 				<artifactId>usertype.core</artifactId>
 				<version>${jadira.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-apt</artifactId>
+				<version>${querydsl.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.mysema.querydsl</groupId>
+				<artifactId>querydsl-jpa</artifactId>
+				<version>${querydsl.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -185,7 +199,22 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.0.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>

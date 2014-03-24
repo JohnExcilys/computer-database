@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.computerdb.model.Company;
+import com.excilys.computerdb.model.QCompany;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 @Repository
 public class DAOCompany {
@@ -22,10 +24,11 @@ public class DAOCompany {
 	@PersistenceContext(unitName = "entityManagerFactory")
 	private EntityManager entityManager;
 
-	@SuppressWarnings("unchecked")
 	public List<Company> getCompanies() throws NamingException, SQLException {
-		String query = "FROM Company";
-		return entityManager.createQuery(query).getResultList();
+
+		QCompany company = QCompany.company;
+		JPAQuery query = new JPAQuery(entityManager);
+		return query.from(company).list(company);
 	}
 
 	public DAOCompany() {
