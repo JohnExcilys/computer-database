@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>computer-database</groupId>
 	<artifactId>computer-database</artifactId>
-	<version>2.2.0-RELEASE</version>
+	<version>3.4.0-RELEASE</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>computer-database-webapp</module>
@@ -26,10 +26,10 @@
 		<slf4j-api.version>1.7.6</slf4j-api.version>
 
 		<!-- Modules -->
-		<computer-database-core.version>2.2.0-RELEASE</computer-database-core.version>
-		<computer-database-binding.version>2.2.0-RELEASE</computer-database-binding.version>
-		<computer-database-persistence.version>2.2.0-RELEASE</computer-database-persistence.version>
-		<computer-database-service.version>2.2.0-RELEASE</computer-database-service.version>
+		<computer-database-core.version>3.4.0-RELEASE</computer-database-core.version>
+		<computer-database-binding.version>3.4.0-RELEASE</computer-database-binding.version>
+		<computer-database-persistence.version>3.4.0-RELEASE</computer-database-persistence.version>
+		<computer-database-service.version>3.4.0-RELEASE</computer-database-service.version>
 
 		<!-- JUnit -->
 		<junit.version>3.8.1</junit.version>
@@ -55,8 +55,8 @@
 		<!-- Jadira -->
 		<jadira.version>3.1.0.GA</jadira.version>
 
-		<!-- Query DSL -->
-		<querydsl.version>3.3.2</querydsl.version>
+		<!-- Spring Data JPA -->
+		<spring-data-jpa.version>1.5.1.RELEASE</spring-data-jpa.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -177,15 +177,9 @@
 				<version>${jadira.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.mysema.querydsl</groupId>
-				<artifactId>querydsl-apt</artifactId>
-				<version>${querydsl.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.mysema.querydsl</groupId>
-				<artifactId>querydsl-jpa</artifactId>
-				<version>${querydsl.version}</version>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-jpa</artifactId>
+				<version>${spring-data-jpa.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -198,22 +192,6 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>apt-maven-plugin</artifactId>
-				<version>1.0.9</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

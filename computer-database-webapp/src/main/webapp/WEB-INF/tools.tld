@@ -9,4 +9,8 @@
 		<name>pagination</name>
 		<path>/WEB-INF/tags/pagination.tag</path>
 	</tag-file>
+	<tag-file>
+		<name>link</name>
+		<path>/WEB-INF/tags/Link.tag</path>
+	</tag-file>
 </taglib>

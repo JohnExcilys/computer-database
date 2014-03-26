@@ -1,25 +1,22 @@
 package com.excilys.computerdb.controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.computerdb.binding.DtoComputer;
 import com.excilys.computerdb.model.Computer;
-import com.excilys.computerdb.model.ComputerOrder;
-import com.excilys.computerdb.model.WrapperListCount;
 import com.excilys.computerdb.service.ServiceComputer;
 
 @Controller
@@ -30,102 +27,36 @@ public class DashboardController {
 	private ServiceComputer serviceComputer;
 
 	@RequestMapping(method = RequestMethod.GET)
-	private String setDashboard(ModelMap model,
-			@RequestParam(defaultValue = "1", required = false) int page,
-			@RequestParam(required = false) String order,
+	private String doGet(ModelMap model, Pageable pageable,
 			@RequestParam(required = false) String search) {
-
-		int numberOfPage = 1;
-		WrapperListCount wrapper = new WrapperListCount();
-
-		ComputerOrder computerOrder = getOrder(order, model);
-		Map<String, String> queryParameters = new HashMap<>();
-		List<DtoComputer> computersDto = new ArrayList<DtoComputer>();
-		if (computerOrder != null) {
-
-			queryParameters.put("order", computerOrder.getUrlParameter());
+		Page<Computer> page = null;
+		if (search == null) {
+			page = serviceComputer.findAll(pageable);
+		} else {
+			model.addAttribute("search", search);
+			page = serviceComputer.findAllByName(search, pageable);
 		}
-		try {
-			int numberOfResult = 0;
-			if (search == null) {
-				numberOfResult = serviceComputer.count(null);
-				numberOfPage = (numberOfResult / 10) + 1;
-				if (page < 1 || page > numberOfPage) {
-					page = 1;
-				}
-
-				wrapper = serviceComputer.findAllByCreteria(null,
-						computerOrder, (page - 1) * 10, 10);
-			} else {
-				numberOfResult = serviceComputer.count(search);
-				numberOfPage = (numberOfResult / 10) + 1;
-				queryParameters.put("search", search);
-				if (page < 1 || page > numberOfPage) {
-					page = 1;
-				}
-
-				wrapper = serviceComputer.findAllByCreteria(search,
-						computerOrder, (page - 1) * 10, 10);
-			}
-			for (Object c : wrapper.getList()) {
-				computersDto.add(DtoComputer.createDTO((Computer) c));
-			}
-			wrapper.setList(computersDto);
-			model.addAttribute("computers", wrapper.getList());
-			model.addAttribute("current_page", page);
-			model.addAttribute("last_page", numberOfPage);
-			model.addAttribute("number_of_result", wrapper.getCount());
-		} catch (SQLException e) {
-			logger.error("Erreur lors de l'accès à la liste", e);
+		if (page.getSort() != null) {
+			Order order = page.getSort().iterator().next();
+			model.addAttribute("order", order.getProperty());
+			model.addAttribute("dir", order.getDirection().name());
 		}
-		model.addAttribute("query_parameters", queryParameters);
+		model.addAttribute("page", page);
 		return "dashboard";
 	}
 
-	public ComputerOrder getOrder(String value, ModelMap model) {
-		ComputerOrder order = null;
-		if (value != null) {
-			switch (value) {
-			case "orderByNameAsc":
-				order = ComputerOrder.ORDER_BY_NAME_ASC;
-				break;
-			case "orderByNameDesc":
-				order = ComputerOrder.ORDER_BY_NAME_DESC;
-				break;
-			case "orderByIntroducedDateAsc":
-				order = ComputerOrder.ORDER_BY_INTRODUCED_DATE_ASC;
-				break;
-			case "orderByIntroducedDateDesc":
-				order = ComputerOrder.ORDER_BY_INTRODUCED_DATE_DESC;
-				break;
-			case "orderByDiscontinuedDateAsc":
-				order = ComputerOrder.ORDER_BY_DISCONTINUED_DATE_ASC;
-				break;
-			case "orderByDiscontinuedDateDesc":
-				order = ComputerOrder.ORDER_BY_DISCONTINUED_DATE_DESC;
-				break;
-			case "orderByCompanyNameAsc":
-				order = ComputerOrder.ORDER_BY_COMPANY_NAME_ASC;
-				break;
-			case "orderByCompanyNameDesc":
-				order = ComputerOrder.ORDER_BY_COMPANY_NAME_DESC;
-				break;
-			default:
-				break;
-			}
-		}
-		model.addAttribute("order", order);
-		return order;
-	}
+	@RequestMapping(method = RequestMethod.POST)
+	private String doPost(ModelMap model, @RequestParam long id) {
+		List<String> message = new ArrayList<>();
 
-	// Test de la page d'erreur personnalisée
-	@RequestMapping(value = "/test")
-	public void test() throws IOException {
+		serviceComputer.delete(id);
+		model.addAttribute("error", false);
+		message.add("dashboard.success.delete");
 
-		// On envoie une exception au ExceptionHandler
-		if (true) {
-			throw new IOException("Exception I/O");
-		}
+		model.addAttribute("message", message);
 
+		Page<Computer> page = serviceComputer.findAll(new PageRequest(0, 10));
+		model.addAttribute("page", page);
+		return "dashboard";
 	}
 }

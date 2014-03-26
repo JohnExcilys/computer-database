@@ -1,58 +1,49 @@
 package com.excilys.computerdb.service;
 
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.computerdb.dao.DAOComputer;
+import com.excilys.computerdb.dao.ComputerRepository;
 import com.excilys.computerdb.model.Computer;
-import com.excilys.computerdb.model.ComputerOrder;
-import com.excilys.computerdb.model.WrapperListCount;
 
 @Service
 @Transactional
 public class ServiceComputer {
+
 	@Autowired
-	DAOComputer daoComputer;
+	ComputerRepository daoComputer;
 
-	public boolean saveComputer(Computer c) throws SQLException, ParseException {
-		daoComputer.saveComputer(c);
-		return false;
+	public Computer find(long id) {
+		return daoComputer.findOne(id);
 	}
 
-	public void deleteComputer(Long id) throws NamingException, SQLException {
-		daoComputer.deleteComputer(id);
+	public Page<Computer> findAllByName(String search, Pageable pageable) {
+		return daoComputer.findByNameContainingOrCompanyNameContaining(search,
+				search, pageable);
 	}
 
-	public int count(String search) throws SQLException {
-		int count = 0;
-		count = daoComputer.count(search);
-		return count;
+	public Page<Computer> findAll(Pageable pageable) {
+		return daoComputer.findAll(pageable);
 	}
 
-	public WrapperListCount findAllByCreteria(String search,
-			ComputerOrder order, int startAt, int numberOfRows)
-			throws SQLException {
-
-		List<Computer> computers = null;
-		computers = daoComputer.findAllByCreteria(search, order, startAt,
-				numberOfRows);
-		int count = daoComputer.count(search);
-		WrapperListCount wrapper = new WrapperListCount(computers, count);
-
-		return wrapper;
+	public List<Computer> findAll() {
+		return daoComputer.findAll();
 	}
 
-	public Computer getComputer(Long id) throws SQLException {
-		Computer cp;
+	public void create(Computer c) {
+		daoComputer.save(c);
+	}
 
-		cp = daoComputer.getComputer(id);
-		return cp;
+	public void update(Computer c) {
+		daoComputer.save(c);
+	}
+
+	public void delete(long id) {
+		daoComputer.delete(id);
 	}
 }

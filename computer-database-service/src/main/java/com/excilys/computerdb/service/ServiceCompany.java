@@ -1,28 +1,35 @@
 package com.excilys.computerdb.service;
 
-import java.sql.SQLException;
 import java.util.List;
-
-import javax.naming.NamingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.computerdb.dao.DAOCompany;
+import com.excilys.computerdb.dao.CompanyRepository;
 import com.excilys.computerdb.model.Company;
 
 @Service
 public class ServiceCompany {
-	// Logger log = Logger.getLogger(ServiceCompany.class.getName());
 	@Autowired
-	DAOCompany daoCompany;
+	private CompanyRepository daoCompany;
 
-	@Transactional
-	public List<Company> getCompanies() throws SQLException, NamingException {
-		List<Company> companyList;
+	public Company find(long id) {
+		return daoCompany.findOne(id);
+	}
 
-		companyList = daoCompany.getCompanies();
-		return companyList;
+	public List<Company> findAll() {
+		return daoCompany.findAll();
+	}
+
+	public void create(Company c) {
+		daoCompany.save(c);
+	}
+
+	public void update(Company c) {
+		daoCompany.save(c);
+	}
+
+	public void delete(long id) {
+		daoCompany.delete(id);
 	}
 }

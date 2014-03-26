@@ -18,8 +18,8 @@
 	</welcome-file-list>
 	<jsp-config>
 		<taglib>
-			<taglib-uri>pagination</taglib-uri>
-			<taglib-location>/WEB-INF/pagination.tld</taglib-location>
+			<taglib-uri>tools</taglib-uri>
+			<taglib-location>/WEB-INF/tools.tld</taglib-location>
 		</taglib>
 	</jsp-config>
 	<servlet>

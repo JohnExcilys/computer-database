@@ -1,6 +1,5 @@
 package com.excilys.computerdb.binding;
 
-import com.excilys.computerdb.model.Company;
 
 public class DtoCompany {
 	private Long id;
@@ -30,26 +29,6 @@ public class DtoCompany {
 	public DtoCompany(Long id, String name) {
 		this.id = id;
 		this.name = name;
-	}
-
-	public static DtoCompany createDTO(Company c) {
-		DtoCompany cDto = null;
-		if (c != null) {
-			cDto = new DtoCompany();
-			cDto.setid(c.getid());
-			cDto.setname(c.getname());
-		}
-		return cDto;
-	}
-
-	public static Company createCompanyFromDto(DtoCompany cDto) {
-		Company c = null;
-		if (cDto != null) {
-			c = new Company();
-			c.setid(cDto.getid());
-			c.setname(cDto.getname());
-		}
-		return c;
 	}
 
 	@Override

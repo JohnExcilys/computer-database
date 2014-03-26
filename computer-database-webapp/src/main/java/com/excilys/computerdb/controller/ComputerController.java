@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.computerdb.binding.DtoCompany;
 import com.excilys.computerdb.binding.DtoComputer;
+import com.excilys.computerdb.binding.mapper.DtoCompanyMapper;
+import com.excilys.computerdb.binding.mapper.DtoComputerMapper;
 import com.excilys.computerdb.controller.validator.ComputerValidator;
 import com.excilys.computerdb.model.Company;
 import com.excilys.computerdb.model.Computer;
@@ -50,21 +52,6 @@ public class ComputerController implements MessageSourceAware {
 	public ComputerController() {
 	}
 
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	protected String deleteComputer(ModelMap model,
-			@RequestParam(required = false) Long delete)
-			throws NamingException, SQLException {
-
-		DtoComputer cDTO = new DtoComputer();
-		model.addAttribute("cDTO", cDTO);
-
-		if (delete != null) {
-			serviceComputer.deleteComputer(delete);
-			model.addAttribute("ajout", "label.computer.delete.success");
-		}
-		return "addComputer";
-	}
-
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	protected String updateComputerGet(ModelMap model,
 			@RequestParam(required = false) Long update)
@@ -75,14 +62,15 @@ public class ComputerController implements MessageSourceAware {
 
 		if (update != null) {
 			StringBuilder sb = new StringBuilder();
-			Computer c = serviceComputer.getComputer(update);
-			cDTO = DtoComputer.createDTO(c);
+			Computer c = serviceComputer.find(update);
+
+			cDTO = DtoComputerMapper.createDTO(c);
 			List<Company> companies = new ArrayList<Company>();
 			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
 
-			companies = serviceCompany.getCompanies();
+			companies = serviceCompany.findAll();
 			for (Company cp : companies) {
-				companiesDto.add(DtoCompany.createDTO(cp));
+				companiesDto.add(DtoCompanyMapper.createDTO(cp));
 			}
 			model.addAttribute("companies", companiesDto);
 			model.addAttribute("cDTO", cDTO);
@@ -104,7 +92,7 @@ public class ComputerController implements MessageSourceAware {
 
 		if (!result.hasErrors()) {
 
-			serviceComputer.saveComputer(DtoComputer.createComputerFromDto(
+			serviceComputer.create(DtoComputerMapper.createComputerFromDto(
 					cDTO, message.getMessage("label.datePatternUsed", null,
 							LocaleContextHolder.getLocale())));
 
@@ -113,18 +101,18 @@ public class ComputerController implements MessageSourceAware {
 			List<Company> companies = new ArrayList<Company>();
 			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
 
-			companies = serviceCompany.getCompanies();
+			companies = serviceCompany.findAll();
 			for (Company c : companies) {
-				companiesDto.add(DtoCompany.createDTO(c));
+				companiesDto.add(DtoCompanyMapper.createDTO(c));
 			}
 			model.addAttribute("companies", companiesDto);
 		} else {
 			StringBuilder sb = new StringBuilder();
 			List<Company> companies = new ArrayList<Company>();
 			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
-			companies = serviceCompany.getCompanies();
+			companies = serviceCompany.findAll();
 			for (Company c : companies) {
-				companiesDto.add(DtoCompany.createDTO(c));
+				companiesDto.add(DtoCompanyMapper.createDTO(c));
 			}
 			model.addAttribute("companies", companiesDto);
 			model.addAttribute("formState", "Update");
@@ -146,9 +134,9 @@ public class ComputerController implements MessageSourceAware {
 		List<Company> companies = new ArrayList<Company>();
 		List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
 
-		companies = serviceCompany.getCompanies();
+		companies = serviceCompany.findAll();
 		for (Company c : companies) {
-			companiesDto.add(DtoCompany.createDTO(c));
+			companiesDto.add(DtoCompanyMapper.createDTO(c));
 		}
 		model.addAttribute("companies", companiesDto);
 		model.addAttribute("action", "./add");
@@ -165,15 +153,15 @@ public class ComputerController implements MessageSourceAware {
 			ParseException, NamingException {
 
 		if (!result.hasErrors()) {
-			serviceComputer.saveComputer(DtoComputer.createComputerFromDto(
+			serviceComputer.create(DtoComputerMapper.createComputerFromDto(
 					cDTO, message.getMessage("label.datePatternUsed", null,
 							LocaleContextHolder.getLocale())));
 
 			List<Company> companies = new ArrayList<Company>();
 			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
-			companies = serviceCompany.getCompanies();
+			companies = serviceCompany.findAll();
 			for (Company c : companies) {
-				companiesDto.add(DtoCompany.createDTO(c));
+				companiesDto.add(DtoCompanyMapper.createDTO(c));
 			}
 			model.addAttribute("companies", companiesDto);
 			model.addAttribute("formState", "Add");
@@ -181,9 +169,9 @@ public class ComputerController implements MessageSourceAware {
 		} else {
 			List<Company> companies = new ArrayList<Company>();
 			List<DtoCompany> companiesDto = new ArrayList<DtoCompany>();
-			companies = serviceCompany.getCompanies();
+			companies = serviceCompany.findAll();
 			for (Company c : companies) {
-				companiesDto.add(DtoCompany.createDTO(c));
+				companiesDto.add(DtoCompanyMapper.createDTO(c));
 			}
 			model.addAttribute("companies", companiesDto);
 			model.addAttribute("formState", "Add");

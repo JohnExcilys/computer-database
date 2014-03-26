@@ -2,6 +2,7 @@ package com.excilys.computerdb.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,7 +32,7 @@ public class Computer {
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	@Temporal(TemporalType.DATE)
 	private LocalDate discontinued;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(referencedColumnName = "id")
 	private Company company;
 

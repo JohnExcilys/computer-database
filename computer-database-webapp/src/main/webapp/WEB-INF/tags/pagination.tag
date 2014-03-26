@@ -1,30 +1,27 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ attribute name="lastPage" required="true" type="java.lang.Integer"
 	rtexprvalue="true"%>
-<%@ attribute name="currentPage" required="true"
-	type="java.lang.Integer" rtexprvalue="true"%>
-<%@ attribute name="queryParameters" required="true"
-	type="java.util.Map" rtexprvalue="true"%>
+<%@ attribute name="url" type="java.lang.String" rtexprvalue="true"
+	required="true"%>
+<%@ attribute name="search" type="java.lang.String" rtexprvalue="true"
+	required="false"%>
+<%@ attribute name="order" type="java.lang.String" rtexprvalue="true"
+	required="false"%>
+<%@ attribute name="dir" type="java.lang.String" rtexprvalue="true"
+	required="false"%>
+<%@ attribute name="curPage" type="java.lang.Integer" rtexprvalue="true"
+	required="true"%>
+<%@ taglib uri="tools" prefix="t"%>
 
-<c:url value="./dashboard" var="variableURL">
-	<c:forEach items="${queryParameters}" var="entry">
-		<c:param name="${entry.key}" value="${entry.value}" />
-	</c:forEach>
-</c:url>
-
-
+<c:set var="currentPage" value="${curPage + 1}" />
 <c:if test="${currentPage > 4}">
-	<c:url value="${variableURL}" var="url">
-		<c:param name="page" value="${currentPage - 4}" />
-	</c:url>
-	<a href="${url}">&lt;&lt;</a>
+	<t:link url="${url}" search="${search}" order="${order}" dir="${dir}"
+		curPage="${currentPage - 4}">&lt;&lt;</t:link>
 </c:if>
 
 <c:if test="${currentPage > 3}">
-	<c:url value="${variableURL}" var="url">
-		<c:param name="page" value="1" />
-	</c:url>
-	<a href="${url}">1</a>
+	<t:link url="${url}" search="${search}" order="${order}" dir="${dir}"
+		curPage="1">1</t:link>
 </c:if>
 
 <c:if test="${currentPage > 4}">
@@ -32,33 +29,25 @@
 </c:if>
 
 <c:if test="${currentPage > 2}">
-	<c:url value="${variableURL}" var="url">
-		<c:param name="page" value="${currentPage - 2}" />
-	</c:url>
-	<a href="${url}">${currentPage - 2}</a>
+	<t:link url="${url}" search="${search}" order="${order}" dir="${dir}"
+		curPage="${currentPage - 2}">${currentPage - 2}</t:link>
 </c:if>
 
 <c:if test="${currentPage > 1}">
-	<c:url value="${variableURL}" var="url">
-		<c:param name="page" value="${currentPage - 1}" />
-	</c:url>
-	<a href="${url}">${currentPage - 1}</a>
+	<t:link url="${url}" search="${search}" order="${order}" dir="${dir}"
+		curPage="${currentPage - 1}">${currentPage - 1}</t:link>
 </c:if>
 
 ${currentPage}
 
 <c:if test="${currentPage + 1 <= lastPage}">
-	<c:url value="${variableURL}" var="url">
-		<c:param name="page" value="${currentPage + 1}" />
-	</c:url>
-	<a href="${url}">${currentPage + 1}</a>
+	<t:link url="${url}" search="${search}" order="${order}" dir="${dir}"
+		curPage="${currentPage + 1}">${currentPage + 1}</t:link>
 </c:if>
 
 <c:if test="${currentPage + 2 <= lastPage}">
-	<c:url value="${variableURL}" var="url">
-		<c:param name="page" value="${currentPage + 2}" />
-	</c:url>
-	<a href="${url}">${currentPage + 2}</a>
+	<t:link url="${url}" search="${search}" order="${order}" dir="${dir}"
+		curPage="${currentPage + 2}">${currentPage + 2}</t:link>
 </c:if>
 
 <c:if test="${currentPage + 4 <= lastPage}">
@@ -66,15 +55,11 @@ ${currentPage}
 </c:if>
 
 <c:if test="${currentPage + 3 <= lastPage}">
-	<c:url value="${variableURL}" var="url">
-		<c:param name="page" value="${lastPage}" />
-	</c:url>
-	<a href="${url}">${lastPage}</a>
+	<t:link url="${url}" search="${search}" order="${order}" dir="${dir}"
+		curPage="${lastPage}">${lastPage}</t:link>
 </c:if>
 
-<c:if test="${currentPage + 3 <= lastPage}">
-	<c:url value="${variableURL}" var="url">
-		<c:param name="page" value="${currentPage + 4}" />
-	</c:url>
-	<a href="${url}">&gt;&gt;</a>
+<c:if test="${currentPage + 4 <= lastPage}">
+	<t:link url="${url}" search="${search}" order="${order}" dir="${dir}"
+		curPage="${currentPage + 4}">&gt;&gt;</t:link>
 </c:if>
