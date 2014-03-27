@@ -71,10 +71,6 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
 	</dependencies>
 	<build>
 		<finalName>computer-database-webapp</finalName>

@@ -28,7 +28,9 @@ public class DashboardController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	private String getDashboard(ModelMap model, Pageable pageable,
-			@RequestParam(required = false) String search) {
+			@RequestParam(required = false) String search,
+			@RequestParam(required = false) String error,
+			@RequestParam(required = false) String message) {
 		Page<Computer> page = null;
 		if (search == null) {
 			page = serviceComputer.findAll(pageable);
@@ -42,6 +44,14 @@ public class DashboardController {
 			model.addAttribute("dir", order.getDirection().name());
 		}
 		model.addAttribute("page", page);
+		if (error != null) {
+			model.addAttribute("error", error);
+		}
+		if (message != null) {
+			List<String> messages = new ArrayList<>();
+			messages.add(message);
+			model.addAttribute("message", messages);
+		}
 
 		return "dashboard";
 	}
