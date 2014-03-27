@@ -16,7 +16,6 @@
 
 	<context:component-scan base-package="com.excilys.computerdb.dao" />
 	<mvc:annotation-driven />
-	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">

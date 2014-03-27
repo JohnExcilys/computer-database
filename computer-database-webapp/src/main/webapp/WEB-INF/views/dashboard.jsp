@@ -10,6 +10,13 @@
 	<h1 id="homeTitle">${page.totalElements}
 		<spring:message code="label.computerFound" />
 	</h1>
+	<c:if test="${!empty message && fn:length(message) != 0}">
+		<div class="alert-message ${ error ? 'error' : 'success'}">
+			<c:forEach var="m" items="${message}">
+				<spring:message code="${m}" text="${m}" />
+			</c:forEach>
+		</div>
+	</c:if>
 	<div id="actions">
 		<form action="" method="GET">
 			<input type="search" id="searchbox" name="search"
@@ -63,12 +70,13 @@
 					<td>${computer.introduced}</td>
 					<td>${computer.discontinued}</td>
 					<td>${computer.company.name}</td>
-					<td><form class="delete_form" action="./dashboard"
-							method="POST">
+					<td>
+						<form class="delete_form" action="./dashboard/delete" method="POST">
 							<input type="hidden" name="id" value="${computer.id}" /> <input
 								type="submit" class="btn danger"
 								value="<spring:message code="label.delete" text="Delete" />" />
-						</form></td>
+						</form>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>

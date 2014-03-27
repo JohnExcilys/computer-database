@@ -9,12 +9,15 @@
 						http://www.springframework.org/schema/context 
   						http://www.springframework.org/schema/context/spring-context-4.0.xsd ">
 
+	<import resource="classpath:binding-context.xml" />
+	<import resource="classpath:service-context.xml" />
+
 	<!-- Default locale (Session) -->
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="fr_FR" />
 	</bean>
-	
+
 	<!-- Locale source bean -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
@@ -22,7 +25,5 @@
 		<property name="basename" value="message" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
-	
-	<import resource="classpath:binding-context.xml"/>
-	<import resource="classpath:service-context.xml"/>
+
 </beans>

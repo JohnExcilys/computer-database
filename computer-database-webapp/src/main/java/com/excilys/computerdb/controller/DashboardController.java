@@ -27,7 +27,7 @@ public class DashboardController {
 	private ServiceComputer serviceComputer;
 
 	@RequestMapping(method = RequestMethod.GET)
-	private String doGet(ModelMap model, Pageable pageable,
+	private String getDashboard(ModelMap model, Pageable pageable,
 			@RequestParam(required = false) String search) {
 		Page<Computer> page = null;
 		if (search == null) {
@@ -42,21 +42,22 @@ public class DashboardController {
 			model.addAttribute("dir", order.getDirection().name());
 		}
 		model.addAttribute("page", page);
+
 		return "dashboard";
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	private String doPost(ModelMap model, @RequestParam long id) {
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	private String deleteComputer(ModelMap model, @RequestParam long id) {
 		List<String> message = new ArrayList<>();
 
 		serviceComputer.delete(id);
 		model.addAttribute("error", false);
-		message.add("dashboard.success.delete");
+		message.add("label.computer.delete.success");
 
 		model.addAttribute("message", message);
 
 		Page<Computer> page = serviceComputer.findAll(new PageRequest(0, 10));
 		model.addAttribute("page", page);
-		return "dashboard";
+		return "redirect:/dashboard";
 	}
 }

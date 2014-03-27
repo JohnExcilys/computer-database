@@ -188,6 +188,5 @@ public class ComputerController implements MessageSourceAware {
 	@Override
 	public void setMessageSource(MessageSource message) {
 		this.message = message;
-
 	}
 }
