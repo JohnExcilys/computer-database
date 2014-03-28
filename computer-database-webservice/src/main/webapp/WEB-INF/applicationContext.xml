@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:ws="http://jax-ws.dev.java.net/spring/core" xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+				http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+				http://jax-ws.dev.java.net/spring/core http://jax-ws.java.net/spring/core.xsd
+				http://jax-ws.dev.java.net/spring/servlet http://jax-ws.java.net/spring/servlet.xsd">
+
+	<wss:binding url="/computer">
+		<wss:service><!-- nested bean is of course fine -->
+			<ws:service bean="#myService" />
+		</wss:service>
+	</wss:binding>
+
+	<bean id="myService" class="com.excilys.computerdb.webservice.ComputerWebService">
+	</bean>
+
+	<import resource="classpath:binding-context.xml" />
+	<import resource="classpath:service-context.xml" />
+</beans>

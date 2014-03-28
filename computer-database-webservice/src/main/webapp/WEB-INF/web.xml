@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+
+	<display-name>Archetype Created Web Application</display-name>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- these are for JAX-WS -->
+	<servlet>
+		<servlet-name>computer-database-webservice</servlet-name>
+		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSSpringServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>computer-database-webservice</servlet-name>
+		<url-pattern>/computer</url-pattern>
+	</servlet-mapping>
+
+</web-app>
