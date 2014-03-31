@@ -64,7 +64,7 @@
 
 
 		<!-- CXF -->
-		<cxf.version>2.7.10</cxf.version>
+		<cxf.version>2.7.0</cxf.version>
 
 		<!-- Jax-WS -->
 		<jaxws.version>1.9</jaxws.version>
