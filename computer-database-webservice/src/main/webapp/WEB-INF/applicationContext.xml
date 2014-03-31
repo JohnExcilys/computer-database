@@ -15,11 +15,17 @@
 		<jaxrs:serviceBeans>
 			<ref bean="myService" />
 		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean='jsonProvider' />
+		</jaxrs:providers>
 	</jaxrs:server>
 
 	<bean id="myService"
 		class="com.excilys.computerdb.webservice.impl.ComputerWebServiceImpl">
 	</bean>
+	
+	<bean id="jsonProvider" 
+		class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
 
 	<context:component-scan base-package="com.excilys.computerdb.webservice"></context:component-scan>
 
