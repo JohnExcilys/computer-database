@@ -15,7 +15,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- these are for JAX-WS -->
+	<!-- JAX-WS -->
 	<servlet>
 		<servlet-name>computer-database-webservice</servlet-name>
 		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSSpringServlet</servlet-class>

@@ -13,7 +13,7 @@
 		</wss:service>
 	</wss:binding>
 
-	<bean id="myService" class="com.excilys.computerdb.webservice.ComputerWebService">
+	<bean id="myService" class="com.excilys.computerdb.webservice.impl.ComputerWebServiceImpl">
 	</bean>
 
 	<import resource="classpath:binding-context.xml" />
