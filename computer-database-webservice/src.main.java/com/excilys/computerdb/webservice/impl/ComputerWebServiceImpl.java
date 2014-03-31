@@ -2,7 +2,7 @@ package com.excilys.computerdb.webservice.impl;
 
 import java.util.List;
 
-import javax.jws.WebService;
+import javax.ws.rs.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +10,7 @@ import com.excilys.computerdb.model.Computer;
 import com.excilys.computerdb.service.ServiceComputer;
 import com.excilys.computerdb.webservice.ComputerWebService;
 
-@WebService
+@Path("/findAll")
 public class ComputerWebServiceImpl implements ComputerWebService {
 
 	@Autowired
@@ -21,4 +21,8 @@ public class ComputerWebServiceImpl implements ComputerWebService {
 		return servicecomputer.findAll();
 	}
 
+	@Override
+	public Computer findOne(int id) {
+		return servicecomputer.find(id);
+	}
 }

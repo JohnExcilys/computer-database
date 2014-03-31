@@ -62,8 +62,15 @@
 		<!-- Spring Security -->
 		<spring-security.version>3.2.3.RELEASE</spring-security.version>
 
+
+		<!-- CXF -->
+		<cxf.version>2.7.10</cxf.version>
+
 		<!-- Jax-WS -->
 		<jaxws.version>1.9</jaxws.version>
+		
+		<!-- Jackson Jax RS -->
+		<jackson-jackrs.version>1.9.13</jackson-jackrs.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -222,6 +229,16 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-beans</artifactId>
 				<version>${springframework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-jaxrs</artifactId>
+				<version>${jackson-jackrs.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
