@@ -14,10 +14,6 @@
 			<artifactId>computer-database-binding</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>computer-database-core</groupId>
-			<artifactId>computer-database-core</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
